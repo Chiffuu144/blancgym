@@ -3,8 +3,27 @@ import User from '../models/User.js';
 import Message from '../models/Message.js';
 import CommunityPost from '../models/CommunityPost.js';
 import CommunityStory from '../models/CommunityStory.js';
+import Notification from '../models/Notification.js';
 
 const friendCard = user => ({ id: user._id, username: user.username, name: user.name, profileImage: user.profileImage || '' });
+const addNotification = (recipient, actor, type, message, post = null) => recipient && String(recipient) !== String(actor) ? Notification.create({ recipient, actor, type, message, post }) : Promise.resolve(null);
+
+export async function getNotifications(req, res, next) {
+  try {
+    const [notifications, unread] = await Promise.all([
+      Notification.find({ recipient: req.user._id }).sort({ createdAt: -1 }).limit(30).populate('actor', 'username name profileImage').lean(),
+      Notification.countDocuments({ recipient: req.user._id, readAt: null })
+    ]);
+    res.json({ notifications, unread });
+  } catch (error) { next(error); }
+}
+
+export async function markNotificationsRead(req, res, next) {
+  try {
+    await Notification.updateMany({ recipient: req.user._id, readAt: null }, { $set: { readAt: new Date() } });
+    res.json({ message: 'Notifications marked as read.' });
+  } catch (error) { next(error); }
+}
 
 async function areFriends(firstId, secondId) {
   const [first, second] = await Promise.all([
@@ -56,7 +75,8 @@ export async function addFriend(req, res, next) {
     if (person.sentFriendRequests.some(id => String(id) === String(req.user._id))) return res.json({ message: 'Friend request already sent.', pending: true });
     await Promise.all([
       User.updateOne({ _id: req.user._id }, { $addToSet: { sentFriendRequests: person._id } }),
-      User.updateOne({ _id: person._id }, { $addToSet: { friendRequests: req.user._id } })
+      User.updateOne({ _id: person._id }, { $addToSet: { friendRequests: req.user._id } }),
+      addNotification(person._id, req.user._id, 'friend_request', 'sent you a friend request')
     ]);
     res.status(201).json({ message: 'Friend request sent.', pending: true, user: friendCard(person) });
   } catch (error) { next(error); }
@@ -70,9 +90,10 @@ export async function respondFriendRequest(req, res, next) {
     const sender = await User.findOne({ _id: userId, sentFriendRequests: req.user._id }).select('username name profileImage');
     if (!sender) return res.status(404).json({ message: 'This friend request is no longer available.' });
     const operations = [
-      User.updateOne({ _id: req.user._id }, { $pull: { friendRequests: sender._id }, ...(action === 'accept' ? { $addToSet: { friends: sender._id } } : {}) }),
-      User.updateOne({ _id: sender._id }, { $pull: { sentFriendRequests: req.user._id }, ...(action === 'accept' ? { $addToSet: { friends: req.user._id } } : {}) })
+      User.updateOne({ _id: req.user._id }, { $pull: { friendRequests: sender._id }, ...(action === 'accept' ? { $addToSet: { friends: sender._id, followers: sender._id, following: sender._id } } : {}) }),
+      User.updateOne({ _id: sender._id }, { $pull: { sentFriendRequests: req.user._id }, ...(action === 'accept' ? { $addToSet: { friends: req.user._id, followers: req.user._id, following: req.user._id } } : {}) })
     ];
+    if (action === 'accept') operations.push(addNotification(sender._id, req.user._id, 'friend_accepted', 'accepted your friend request'));
     await Promise.all(operations);
     res.json({ message: action === 'accept' ? 'Friend request accepted.' : 'Friend request removed.', friend: action === 'accept' ? friendCard(sender) : null });
   } catch (error) { next(error); }
@@ -181,6 +202,7 @@ export async function reactToPost(req, res, next) {
     else if (existing) existing.type = reaction;
     else post.reactions.push({ user: req.user._id, type: reaction });
     await post.save();
+    if (!existing && String(post.author) !== String(req.user._id)) await addNotification(post.author, req.user._id, 'post_reaction', `reacted ${reaction} to your post`, post._id);
     await post.populate('author', 'username name profileImage');
     await post.populate('reactions.user', 'username name profileImage');
     await post.populate('comments.author', 'username name profileImage');
@@ -197,6 +219,7 @@ export async function addPostComment(req, res, next) {
     if (post.comments.length >= 200) return res.status(400).json({ message: 'This post has reached its comment limit.' });
     post.comments.push({ author: req.user._id, text });
     await post.save();
+    await addNotification(post.author, req.user._id, 'post_comment', 'commented on your post', post._id);
     await post.populate('author', 'username name profileImage');
     await post.populate('reactions.user', 'username name profileImage');
     await post.populate('comments.author', 'username name profileImage');
@@ -236,7 +259,7 @@ export async function getSocialProfile(req, res, next) {
     ]);
     res.json({
       profile: { id: profile._id, name: profile.name, username: profile.username, profileImage: profile.profileImage || '', featuredPhotos: profile.featuredPhotos || [], goal: profile.goal },
-      stats: { posts: totalPosts, followers: (profile.followers || []).length, following: (profile.following || []).length },
+      stats: { posts: totalPosts, followers: new Set([...(profile.followers || []), ...(profile.friends || [])].map(String)).size, following: new Set([...(profile.following || []), ...(profile.friends || [])].map(String)).size },
       isOwnProfile: String(profile._id) === String(req.user._id),
       isFollowing: (req.user.following || []).some(id => String(id) === String(profile._id)),
       isFriend: (req.user.friends || []).some(id => String(id) === String(profile._id)),
@@ -258,7 +281,8 @@ export async function followUser(req, res, next) {
     if (other.sentFriendRequests.some(id => String(id) === String(req.user._id))) return res.status(409).json({ message: 'This person already sent you a request. Open Friends to accept it.' });
     await Promise.all([
       User.updateOne({ _id: req.user._id }, { $addToSet: { sentFriendRequests: profile._id } }),
-      User.updateOne({ _id: profile._id }, { $addToSet: { friendRequests: req.user._id } })
+      User.updateOne({ _id: profile._id }, { $addToSet: { friendRequests: req.user._id } }),
+      addNotification(profile._id, req.user._id, 'friend_request', 'sent you a friend request')
     ]);
     res.json({ message: 'Friend request sent.', pending: true });
   } catch (error) { next(error); }

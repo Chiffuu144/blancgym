@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar.jsx';
 import GlassCard from '../components/GlassCard.jsx';
 import LoadingScreen from '../components/LoadingScreen.jsx';
+import ConfirmDialog from '../components/ConfirmDialog.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const goals = [['fat-loss', 'Lose weight'], ['build-muscle', 'Build muscle'], ['maintain-weight', 'Maintain weight']];
@@ -22,24 +23,40 @@ export default function Profile() {
   const [form, setForm] = useState({ username: user?.username || '', gender: user?.gender || 'Female', age: user?.age || '', weightKg: user?.weightKg || '', heightCm: user?.heightCm || '', experience: user?.experience || 'starting', workoutFrequency: user?.workoutFrequency || '1-2', goal: user?.goal || 'maintain-weight' });
   const [photo, setPhoto] = useState(user?.profileImage || '');
   const [featuredPhotos, setFeaturedPhotos] = useState([]);
+  const [savedFeaturedPhotos, setSavedFeaturedPhotos] = useState([]);
   const [overview, setOverview] = useState(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [confirmation, setConfirmation] = useState(null);
 
   const refreshOverview = useCallback(async () => {
-    try { const result = await getSocialProfile(user?.username); setOverview(result); setFeaturedPhotos(result.profile.featuredPhotos || []); setPhoto(result.profile.profileImage || ''); }
+    try { const result = await getSocialProfile(user?.username); setOverview(result); const saved = result.profile.featuredPhotos || []; setFeaturedPhotos(saved); setSavedFeaturedPhotos(saved); setPhoto(result.profile.profileImage || ''); }
     catch (requestError) { if (requestError.message !== 'Profile not found.') setError(requestError.message); }
   }, [getSocialProfile, user?.username]);
   useEffect(() => { refreshOverview(); }, [refreshOverview]);
 
   async function submit(event) {
-    event.preventDefault(); setBusy(true); setError(''); setMessage('');
-    try {
-      await updateProfile({ ...form, age: Number(form.age), weightKg: Number(form.weightKg), heightCm: Number(form.heightCm), profileImage: photo, featuredPhotos });
-      setMessage('Your profile and featured photos have been saved.'); await refreshOverview();
-    } catch (requestError) { setError(requestError.message); }
+    event.preventDefault(); setError(''); setMessage('');
+    setConfirmation({ title: 'Save your profile changes?', message: 'Your details and profile photo will be updated on your account.', confirmLabel: 'Save profile', action: async () => {
+      await updateProfile({ ...form, age: Number(form.age), weightKg: Number(form.weightKg), heightCm: Number(form.heightCm), profileImage: photo });
+      setMessage('Your profile has been saved.'); await refreshOverview();
+    } });
+  }
+
+  async function confirmAction() {
+    if (!confirmation?.action) return;
+    setBusy(true); setError('');
+    try { await confirmation.action(); setConfirmation(null); }
+    catch (requestError) { setError(requestError.message); setConfirmation(null); }
     finally { setBusy(false); }
+  }
+
+  function saveFeatured() {
+    setError(''); setMessage('');
+    setConfirmation({ title: 'Save featured photos?', message: 'The photos you pinned will appear on your community profile.', confirmLabel: 'Save photos', action: async () => {
+      await updateProfile({ featuredPhotos }); setSavedFeaturedPhotos(featuredPhotos); setMessage('Featured photos have been saved.'); await refreshOverview();
+    } });
   }
 
   async function choosePhoto(event) { try { setPhoto(await readImage(event.target.files?.[0], 900)); setError(''); } catch (requestError) { setError(requestError.message); } event.target.value = ''; }
@@ -62,8 +79,8 @@ export default function Profile() {
         <div className="min-w-0 flex-1"><h2 className="truncate font-display text-2xl font-medium text-ink">{user?.name || user?.username}</h2><p className="mt-1 text-sm text-muted">@{user?.username}</p><div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm"><span><strong className="text-ink">{overview?.stats?.posts ?? '—'}</strong> <span className="text-muted">posts</span></span><span><strong className="text-ink">{overview?.stats?.followers ?? '—'}</strong> <span className="text-muted">followers</span></span><span><strong className="text-ink">{overview?.stats?.following ?? '—'}</strong> <span className="text-muted">following</span></span></div></div>
         <Link to="/community#post-composer" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-roseDark px-4 py-2.5 text-xs font-semibold text-white"><Plus size={15} /> Create post</Link>
       </div>
-      <div className="mt-6 border-t border-line pt-5"><div className="mb-3 flex items-center justify-between"><div><p className="text-[10px] font-semibold uppercase tracking-[.15em] text-roseDark">Featured photos</p><p className="mt-1 text-xs text-muted">Pin up to 4 moments to your profile.</p></div><label className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-line px-3 py-2 text-xs font-medium text-ink hover:bg-cream"><ImagePlus size={14} /> Add photos<input type="file" accept="image/jpeg,image/png,image/webp" multiple className="sr-only" onChange={addFeatured} disabled={featuredPhotos.length >= 4} /></label></div>
-        {featuredPhotos.length ? <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">{featuredPhotos.map((image, index) => <div key={`${index}-${image.slice(-20)}`} className="group relative aspect-square overflow-hidden rounded-2xl bg-cream"><img src={image} alt={`Featured moment ${index + 1}`} className="h-full w-full object-cover" /><button type="button" aria-label="Remove featured photo" onClick={() => setFeaturedPhotos(current => current.filter((_, i) => i !== index))} className="absolute right-2 top-2 rounded-full bg-white/90 p-1.5 text-ink opacity-100 sm:opacity-0 sm:group-hover:opacity-100"><X size={14} /></button></div>)}</div> : <div className="rounded-2xl bg-cream/50 px-4 py-5 text-center text-xs text-muted">Your featured photos will show up here.</div>}
+      <div className="mt-6 border-t border-line pt-5"><div className="mb-3 flex items-center justify-between"><div><p className="text-[10px] font-semibold uppercase tracking-[.15em] text-roseDark">Featured photos</p><p className="mt-1 text-xs text-muted">Pin up to 4 moments to your profile.</p></div><div className="flex items-center gap-2"><label className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-line px-3 py-2 text-xs font-medium text-ink hover:bg-cream"><ImagePlus size={14} /> Add photos<input type="file" accept="image/jpeg,image/png,image/webp" multiple className="sr-only" onChange={addFeatured} disabled={featuredPhotos.length >= 4} /></label><button type="button" disabled={busy || JSON.stringify(featuredPhotos) === JSON.stringify(savedFeaturedPhotos)} onClick={saveFeatured} className="inline-flex items-center gap-1.5 rounded-full bg-roseDark px-3 py-2 text-xs font-semibold text-white disabled:opacity-45"><Save size={13} /> Save photos</button></div></div>
+        {featuredPhotos.length ? <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">{featuredPhotos.map((image, index) => <div key={`${index}-${image.slice(-20)}`} className="group relative aspect-square overflow-hidden rounded-2xl bg-cream"><img src={image} alt={`Featured moment ${index + 1}`} className="h-full w-full object-cover" /><button type="button" aria-label="Remove featured photo" onClick={() => setConfirmation({ title: 'Remove this featured photo?', message: 'This photo will be marked for removal. Save your featured photos to apply the change.', confirmLabel: 'Remove photo', danger: true, action: async () => setFeaturedPhotos(current => current.filter((_, i) => i !== index)) })} className="absolute right-2 top-2 rounded-full bg-white/90 p-1.5 text-ink opacity-100 sm:opacity-0 sm:group-hover:opacity-100"><X size={14} /></button></div>)}</div> : <div className="rounded-2xl bg-cream/50 px-4 py-5 text-center text-xs text-muted">Your featured photos will show up here.</div>}
       </div>
     </GlassCard>
 
@@ -75,5 +92,5 @@ export default function Profile() {
       <GlassCard className="space-y-5 p-6 sm:p-8"><div><p className="text-[10px] font-semibold uppercase tracking-[.15em] text-roseDark">Edit your details</p><p className="mt-1 text-xs text-muted">Your daily calorie estimate refreshes when profile details or goals change.</p></div>{field('Username', 'username')}<div className="grid gap-4 sm:grid-cols-2">{field('Age', 'age', 'number')}{field('Weight (kg)', 'weightKg', 'number')}{field('Height (cm)', 'heightCm', 'number')}<label className="block text-xs font-medium">Gender<select className="field mt-2" value={form.gender} onChange={event => setForm(current => ({ ...current, gender: event.target.value }))}><option>Female</option><option>Male</option></select></label></div><div><p className="text-xs font-semibold text-ink">Current goal</p><div className="mt-3 grid gap-2 sm:grid-cols-3">{goals.map(([value, label]) => <button type="button" key={value} aria-pressed={form.goal === value} onClick={() => setForm(current => ({ ...current, goal: value }))} className={`rounded-xl border px-3 py-3 text-left text-xs ${form.goal === value ? 'border-rose bg-blush font-semibold text-roseDark' : 'border-line bg-cream/50 text-muted'}`}>{label}</button>)}</div></div>
       <div className="grid gap-4 sm:grid-cols-2"><label className="block text-xs font-medium">Experience<select className="field mt-2" value={form.experience} onChange={event => setForm(current => ({ ...current, experience: event.target.value }))}><option value="starting">Just starting</option><option value="6-months">6+ months</option><option value="2-years">2+ years</option></select></label><label className="block text-xs font-medium">Weekly movement<select className="field mt-2" value={form.workoutFrequency} onChange={event => setForm(current => ({ ...current, workoutFrequency: event.target.value }))}><option value="1-2">1–2 days</option><option value="3-5">3–5 days</option><option value="daily">Daily</option></select></label></div>{error && <p role="alert" className="rounded-xl bg-blush px-3 py-2.5 text-xs text-roseDark">{error}</p>}{message && <p role="status" className="rounded-xl bg-cream px-3 py-2.5 text-xs text-roseDark">{message}</p>}<button disabled={busy} className="inline-flex items-center justify-center gap-2 rounded-xl bg-roseDark px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"><Save size={16} />{busy ? 'Saving...' : 'Save changes'}</button></GlassCard>
     </form>
-  </main></div>;
+  </main><ConfirmDialog open={Boolean(confirmation)} title={confirmation?.title} message={confirmation?.message} confirmLabel={confirmation?.confirmLabel} danger={confirmation?.danger} busy={busy} onConfirm={confirmAction} onCancel={() => setConfirmation(null)} /></div>;
 }

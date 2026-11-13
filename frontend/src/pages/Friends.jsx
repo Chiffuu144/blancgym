@@ -4,6 +4,7 @@ import { ArrowLeft, Check, MessageCircle, Plus, Search, Send, UserMinus, Users, 
 import { Link, useSearchParams } from 'react-router-dom';
 import GlassCard from '../components/GlassCard.jsx';
 import Navbar from '../components/Navbar.jsx';
+import ConfirmDialog from '../components/ConfirmDialog.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 
 function Avatar({ person, size = 'h-11 w-11' }) {
@@ -24,6 +25,7 @@ export default function Friends() {
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState('');
   const [error, setError] = useState('');
+  const [confirmation, setConfirmation] = useState(null);
   const [busy, setBusy] = useState(false);
   const [searching, setSearching] = useState(false);
   const bottomRef = useRef(null);
@@ -77,10 +79,14 @@ export default function Friends() {
   }
 
   async function handleRemove(person) {
-    if (!window.confirm(`Unfriend @${person.username}?`)) return;
+    setConfirmation({ title: `Unfriend ${displayName(person)}?`, message: 'You will no longer see each other in your friend feeds or send messages here.', confirmLabel: 'Unfriend', action: async () => { await removeFriend(person.id); if (selected?.id === person.id) setSelected(null); await refreshFriends(); } });
+  }
+
+  async function confirmAction() {
+    if (!confirmation?.action) return;
     setBusy(true); setError('');
-    try { await removeFriend(person.id); if (selected?.id === person.id) setSelected(null); await refreshFriends(); }
-    catch (requestError) { setError(requestError.message); }
+    try { await confirmation.action(); setConfirmation(null); }
+    catch (requestError) { setError(requestError.message); setConfirmation(null); }
     finally { setBusy(false); }
   }
 
@@ -126,5 +132,6 @@ export default function Friends() {
         </GlassCard>
       </section>
     </main>
+    <ConfirmDialog open={Boolean(confirmation)} title={confirmation?.title} message={confirmation?.message} confirmLabel={confirmation?.confirmLabel} danger={confirmation?.danger} busy={busy} onConfirm={confirmAction} onCancel={() => setConfirmation(null)} />
   </div>;
 }

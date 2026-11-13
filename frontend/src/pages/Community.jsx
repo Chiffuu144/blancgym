@@ -6,6 +6,7 @@ import GlassCard from '../components/GlassCard.jsx';
 import LoadingScreen from '../components/LoadingScreen.jsx';
 import Navbar from '../components/Navbar.jsx';
 import ReactionBar from '../components/ReactionBar.jsx';
+import ConfirmDialog from '../components/ConfirmDialog.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 
 function authorId(author) { return String(author?._id || author?.id || ''); }
@@ -42,6 +43,7 @@ export default function Community() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [confirmation, setConfirmation] = useState(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -85,10 +87,7 @@ export default function Community() {
   async function publishPost(event) {
     event.preventDefault();
     if (!text.trim() && images.length === 0 && !video) return;
-    setBusy(true); setError('');
-    try { await createPost({ text, images, video }); setText(''); setImages([]); setVideo(''); setVideoPreview(''); await refresh(); }
-    catch (requestError) { setError(requestError.message); }
-    finally { setBusy(false); }
+    setConfirmation({ title: 'Share this post?', message: 'Your post and selected photos or reel will be visible to your friends.', confirmLabel: 'Share post', action: async () => { await createPost({ text, images, video }); setText(''); setImages([]); setVideo(''); setVideoPreview(''); await refresh(); } });
   }
 
   async function chooseStoryImage(event) {
@@ -100,9 +99,16 @@ export default function Community() {
   }
 
   async function publishStory(event) {
-    event.preventDefault(); setBusy(true); setError('');
-    try { await createStory({ caption: storyCaption, image: storyImage }); setStoryCaption(''); setStoryImage(''); setShowStoryComposer(false); await refresh(); }
-    catch (requestError) { setError(requestError.message); }
+    event.preventDefault();
+    if (!storyCaption.trim() && !storyImage) return;
+    setConfirmation({ title: 'Share this to your day?', message: 'Your story will be visible to your friends and expire after 24 hours.', confirmLabel: 'Share my day', action: async () => { await createStory({ caption: storyCaption, image: storyImage }); setStoryCaption(''); setStoryImage(''); setShowStoryComposer(false); await refresh(); } });
+  }
+
+  async function confirmAction() {
+    if (!confirmation?.action) return;
+    setBusy(true); setError('');
+    try { await confirmation.action(); setConfirmation(null); }
+    catch (requestError) { setError(requestError.message); setConfirmation(null); }
     finally { setBusy(false); }
   }
 
@@ -118,9 +124,7 @@ export default function Community() {
   }
 
   async function removePost(post) {
-    if (!window.confirm('Delete this post?')) return;
-    try { await deletePost(post._id); setPosts(current => current.filter(item => item._id !== post._id)); }
-    catch (requestError) { setError(requestError.message); }
+    setConfirmation({ title: 'Delete this post?', message: 'This post will be permanently removed from your profile and your friends’ feeds.', confirmLabel: 'Delete post', danger: true, action: async () => { await deletePost(post._id); setPosts(current => current.filter(item => item._id !== post._id)); } });
   }
 
   const myStory = storyPeople.find(story => authorId(story.author) === String(user?.id));
@@ -170,5 +174,6 @@ export default function Community() {
     <AnimatePresence>{showStoryComposer && <motion.div className="fixed inset-0 z-50 grid place-items-center bg-ink/50 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={event => { if (event.target === event.currentTarget) setShowStoryComposer(false); }}><motion.div role="dialog" aria-modal="true" aria-labelledby="story-composer-title" initial={{ opacity: 0, y: 12, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: .98 }} className="w-full max-w-md rounded-3xl bg-paper p-5 shadow-2xl sm:p-6"><div className="flex items-center justify-between"><div><p className="text-[10px] font-semibold uppercase tracking-[.15em] text-roseDark">My day · 24 hours</p><h2 id="story-composer-title" className="mt-1 font-display text-xl font-medium text-ink">Share today's movement</h2></div><button type="button" onClick={() => setShowStoryComposer(false)} aria-label="Close" className="rounded-full p-2 text-muted hover:bg-cream"><X size={18} /></button></div><form onSubmit={publishStory} className="mt-5 space-y-4"><label className="block text-xs font-medium text-ink">A short check-in<textarea className="field mt-2 min-h-24 resize-y" value={storyCaption} onChange={event => setStoryCaption(event.target.value)} maxLength={240} placeholder="Finished a walk, got to the gym, or showed up for myself today..." /></label><label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-dashed border-line bg-cream/50 px-4 py-4 text-xs font-medium text-muted hover:bg-blush"><Camera size={16} />{storyImage ? 'Change story photo' : 'Add a story photo'}<input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" className="sr-only" onChange={chooseStoryImage} /></label>{storyImage && <img src={storyImage} alt="Story preview" className="max-h-64 w-full rounded-2xl object-cover" />}<p className="text-[11px] leading-5 text-muted">Your story is shared with your friends and expires automatically after 24 hours.</p><button disabled={busy || (!storyCaption.trim() && !storyImage)} className="w-full rounded-xl bg-roseDark px-4 py-3 text-sm font-semibold text-white disabled:opacity-50">{busy ? 'Sharing...' : 'Share my day'}</button></form></motion.div></motion.div>}</AnimatePresence>
 
     <AnimatePresence>{activeStory && <motion.div className="fixed inset-0 z-50 grid place-items-center bg-ink/85 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={event => { if (event.target === event.currentTarget) setActiveStory(null); }}><motion.article role="dialog" aria-modal="true" aria-label={`${activeStory.author?.username || 'Friend'}'s story`} initial={{ opacity: 0, scale: .97 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: .97 }} className="relative flex max-h-[88vh] min-h-[300px] w-full max-w-md flex-col overflow-hidden rounded-3xl bg-paper shadow-2xl">{activeStory.image && <img src={activeStory.image} alt="Shared daily activity" className="min-h-0 flex-1 bg-ink object-contain" />}<div className="absolute left-0 right-0 top-0 flex items-center gap-3 bg-gradient-to-b from-black/60 to-transparent p-4 text-white"><Avatar person={activeStory.author} size="h-9 w-9" /><div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">{displayName(activeStory.author)}</p><p className="text-[10px] text-white/75">{formatTime(activeStory.createdAt)}</p></div><button type="button" aria-label="Close story" onClick={() => setActiveStory(null)} className="rounded-full bg-black/25 p-2"><X size={17} /></button></div>{activeStory.caption && <p className="whitespace-pre-wrap p-5 text-sm leading-6 text-ink">{activeStory.caption}</p>}</motion.article></motion.div>}</AnimatePresence>
+    <ConfirmDialog open={Boolean(confirmation)} title={confirmation?.title} message={confirmation?.message} confirmLabel={confirmation?.confirmLabel} danger={confirmation?.danger} busy={busy} onConfirm={confirmAction} onCancel={() => setConfirmation(null)} />
   </div>;
 }

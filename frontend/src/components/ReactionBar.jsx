@@ -20,6 +20,9 @@ export default function ReactionBar({ reactions = [], myReaction, onReact }) {
   const holdTimer = useRef(null);
   const suppressTap = useRef(false);
   const selected = options.find(option => option.type === myReaction);
+  const reactionCounts = options
+    .map(option => ({ ...option, count: reactions.filter(reaction => reaction.type === option.type).length }))
+    .filter(option => option.count > 0);
 
   function beginHold(event) {
     if (event.pointerType !== 'touch') return;
@@ -38,7 +41,7 @@ export default function ReactionBar({ reactions = [], myReaction, onReact }) {
     </div>}
     <div className="flex min-w-0 items-center gap-2">
       <button type="button" onPointerEnter={event => { if (event.pointerType === 'mouse') setPickerOpen(true); }} onPointerDown={beginHold} onPointerUp={endHold} onPointerCancel={endHold} onPointerLeave={endHold} onKeyDown={event => { if (event.key === 'ArrowDown') setPickerOpen(true); }} onClick={like} aria-pressed={Boolean(selected)} aria-expanded={pickerOpen} className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold transition-colors ${selected ? 'bg-blush text-roseDark' : 'text-muted hover:bg-cream hover:text-ink'}`}><span>{selected ? selected.emoji : <ThumbsUp size={15} />}</span>{selected ? selected.label : 'Like'}</button>
-      {reactions.length > 0 && <button type="button" onClick={() => setListOpen(open => !open)} aria-expanded={listOpen} className="flex min-w-0 items-center gap-1.5 rounded-full px-2 py-1 text-[11px] text-muted hover:bg-cream"><span className="flex -space-x-2">{reactions.slice(0, 3).map((reaction, index) => <Avatar key={`${reaction.user?._id || index}-${reaction.type}`} person={reaction.user} />)}</span><span className="truncate">{reactions.length} {reactions.length === 1 ? 'reaction' : 'reactions'}</span></button>}
+      {reactionCounts.length > 0 && <button type="button" onClick={() => setListOpen(open => !open)} aria-expanded={listOpen} aria-label={`${reactions.length} total reactions. ${reactionCounts.map(option => `${option.label}: ${option.count}`).join(', ')}. Show who reacted.`} className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 rounded-full px-2 py-1 text-[11px] text-muted hover:bg-cream">{reactionCounts.map(option => <span key={option.type} className="inline-flex items-center gap-1 whitespace-nowrap"><span aria-hidden="true">{option.emoji}</span><span>{option.count}</span></span>)}</button>}
     </div>
     {listOpen && <div className="absolute bottom-full left-0 z-20 mb-2 max-h-56 w-64 max-w-[calc(100vw-3rem)] overflow-y-auto rounded-2xl border border-line bg-white p-2 shadow-xl">
       {reactions.map((reaction, index) => <div key={`${reaction.user?._id || index}-${reaction.type}`} className="flex items-center gap-2 rounded-xl px-2 py-1.5"><Avatar person={reaction.user} /><span className="min-w-0 flex-1 truncate text-xs font-medium text-ink">{reaction.user?.name || `@${reaction.user?.username || 'user'}`}</span><span className="text-base" aria-label={reaction.type}>{options.find(option => option.type === reaction.type)?.emoji}</span></div>)}

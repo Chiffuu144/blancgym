@@ -5,15 +5,8 @@ import { Link } from 'react-router-dom';
 import GlassCard from '../components/GlassCard.jsx';
 import LoadingScreen from '../components/LoadingScreen.jsx';
 import Navbar from '../components/Navbar.jsx';
+import ReactionBar from '../components/ReactionBar.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
-
-const reactionOptions = [
-  { id: 'like', emoji: '\u{1F44D}', label: 'Like' },
-  { id: 'heart', emoji: '\u{2764}\u{FE0F}', label: 'Love' },
-  { id: 'haha', emoji: '\u{1F602}', label: 'Haha' },
-  { id: 'sad', emoji: '\u{1F622}', label: 'Sad' },
-  { id: 'angry', emoji: '\u{1F621}', label: 'Angry' }
-];
 
 function authorId(author) { return String(author?._id || author?.id || ''); }
 function displayName(person) { return person?.name && person.name !== person.username ? person.name : `@${person?.username || 'member'}`; }
@@ -159,15 +152,15 @@ export default function Community() {
       {loading ? <LoadingScreen message="Gathering your community..." compact /> : posts.length === 0 ? <GlassCard className="p-8 text-center sm:p-10"><span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-blush text-roseDark"><Heart size={23} /></span><h2 className="mt-4 font-display text-xl font-medium text-ink">Your feed starts with a hello.</h2><p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-muted">Add friends to see their workout check-ins, or share your first post above.</p><Link to="/friends" className="mt-5 inline-flex items-center gap-2 rounded-full bg-roseDark px-4 py-2.5 text-xs font-semibold text-white">Find friends <Plus size={14} /></Link></GlassCard> : <div className="space-y-5">{posts.map(post => {
         const own = authorId(post.author) === String(user?.id);
         const mine = post.reactions?.find(item => authorId(item.user) === String(user?.id))?.type;
-        const counts = (post.reactions || []).reduce((acc, reaction) => ({ ...acc, [reaction.type]: (acc[reaction.type] || 0) + 1 }), {});
+
         return <GlassCard key={post._id} className="overflow-hidden p-0">
           <div className="flex items-center gap-3 px-4 py-4 sm:px-5"><Link to={`/u/${post.author?.username}`}><Avatar person={post.author} size="h-10 w-10" /></Link><div className="min-w-0 flex-1"><Link to={`/u/${post.author?.username}`} className="block truncate text-sm font-semibold text-ink hover:text-roseDark">{displayName(post.author)}</Link><p className="text-[11px] text-muted">@{post.author?.username} · {formatTime(post.createdAt)}</p></div>{own && <button type="button" onClick={() => removePost(post)} className="rounded-full p-2 text-muted hover:bg-blush hover:text-roseDark" aria-label="Delete post"><Trash2 size={15} /></button>}</div>
           {post.text && <p className="whitespace-pre-wrap break-words px-4 pb-4 text-sm leading-6 text-ink sm:px-5">{post.text}</p>}
           {post.images?.length > 0 && <div className={`grid gap-1 ${post.images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>{post.images.map((image, index) => <img key={index} src={image} alt={`Photo shared by ${post.author?.username}`} className={`${post.images.length === 1 ? 'max-h-[620px]' : 'aspect-square'} w-full bg-cream object-cover`} loading="lazy" />)}</div>}
           {post.video && <video src={post.video} controls playsInline preload="metadata" className="mx-auto max-h-[75vh] w-full bg-black object-contain" />}
-          <div className="px-4 pt-3 sm:px-5">{post.reactions?.length > 0 && <p className="mb-2 text-[11px] text-muted">{reactionOptions.filter(option => counts[option.id]).map(option => `${option.emoji} ${counts[option.id]}`).join('  ·  ')}</p>}
-            <div className="flex flex-wrap items-center gap-1 border-y border-line py-2">{reactionOptions.map(option => <button key={option.id} type="button" onClick={() => handleReaction(post, option.id)} aria-pressed={mine === option.id} className={`flex items-center gap-1.5 rounded-full px-2.5 py-2 text-[11px] font-medium transition-colors ${mine === option.id ? 'bg-blush text-roseDark' : 'text-muted hover:bg-cream hover:text-ink'}`}><span>{option.emoji}</span><span className="hidden sm:inline">{option.label}</span></button>)}<span className="ml-auto inline-flex items-center gap-1.5 px-2 text-[11px] text-muted"><MessageCircle size={14} /> {post.comments?.length || 0}</span></div>
-            {post.comments?.length > 0 && <div className="max-h-60 space-y-2 overflow-y-auto py-3">{post.comments.map(comment => <p key={comment._id} className="break-words text-xs leading-5 text-ink"><span className="font-semibold">{comment.author?.username || 'friend'}</span><span className="ml-2 text-muted">{comment.text}</span></p>)}</div>}
+          <div className="px-4 pt-3 sm:px-5">
+            <div className="flex items-center gap-2 border-y border-line py-2"><ReactionBar reactions={post.reactions || []} myReaction={mine} onReact={reaction => handleReaction(post, reaction)} /><span className="inline-flex shrink-0 items-center gap-1.5 px-2 text-[11px] text-muted"><MessageCircle size={14} /> {post.comments?.length || 0}</span></div>
+            {post.comments?.length > 0 && <div className="max-h-60 space-y-2 overflow-y-auto py-3">{post.comments.map(comment => <div key={comment._id} className="flex items-start gap-2.5"><Link to={'/u/' + comment.author?.username} className="shrink-0"><Avatar person={comment.author} size="h-8 w-8" /></Link><p className="min-w-0 break-words pt-1 text-xs leading-5 text-ink"><Link to={'/u/' + comment.author?.username} className="font-semibold hover:text-roseDark">{displayName(comment.author)}</Link><span className="ml-2 text-muted">{comment.text}</span></p></div>)}</div>}
             <form onSubmit={event => publishComment(event, post)} className="flex items-center gap-2 py-3"><Avatar person={user} size="h-8 w-8" /><input className="field h-10 min-w-0 flex-1 rounded-full bg-cream/60 px-4 text-xs" maxLength={500} value={commentDrafts[post._id] || ''} onChange={event => setCommentDrafts(current => ({ ...current, [post._id]: event.target.value }))} placeholder="Write a kind comment..." /><button disabled={!(commentDrafts[post._id] || '').trim()} aria-label="Post comment" className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-roseDark hover:bg-blush disabled:opacity-40"><Send size={15} /></button></form>
           </div>
         </GlassCard>;

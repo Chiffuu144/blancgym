@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import GlassCard from '../components/GlassCard.jsx';
 import LoadingScreen from '../components/LoadingScreen.jsx';
 import Navbar from '../components/Navbar.jsx';
+import ReactionBar from '../components/ReactionBar.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 
-const reactions = [{ type: 'like', emoji: '👍' }, { type: 'heart', emoji: '❤️' }, { type: 'haha', emoji: '😂' }, { type: 'sad', emoji: '😢' }, { type: 'angry', emoji: '😡' }];
 const idOf = value => String(value?._id || value?.id || value || '');
 
 function readVideo(file) {
@@ -85,10 +85,10 @@ export default function Reels() {
 
     {loading ? <LoadingScreen message="Finding your friends' reels..." compact /> : reels.length === 0 ? <GlassCard className="p-8 text-center sm:p-10"><span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-blush text-roseDark"><Play size={23} /></span><h2 className="mt-4 font-display text-xl font-medium text-ink">No reels yet.</h2><p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-muted">Upload your first workout clip above, or add a friend to see their videos here.</p><Link to="/friends?tab=search" className="mt-5 inline-flex items-center gap-2 rounded-full bg-roseDark px-4 py-2.5 text-xs font-semibold text-white"><Plus size={14} /> Find friends</Link></GlassCard> : <div className="space-y-5">{reels.map(reel => {
       const ownReaction = reel.reactions?.find(item => idOf(item.user) === String(user?.id))?.type;
-      const reactionCount = reel.reactions?.length || 0;
+
       return <GlassCard key={reel._id} className="overflow-hidden p-0"><div className="flex items-center gap-3 px-4 py-4 sm:px-5"><Link to={`/u/${reel.author?.username}`}><Avatar person={reel.author} /></Link><div className="min-w-0 flex-1"><Link to={`/u/${reel.author?.username}`} className="block truncate text-sm font-semibold text-ink">{reel.author?.name || `@${reel.author?.username}`}</Link><p className="text-[11px] text-muted">@{reel.author?.username}</p></div></div><video src={reel.video} controls playsInline preload="metadata" className="mx-auto max-h-[70vh] w-full bg-black object-contain" />{reel.text && <p className="whitespace-pre-wrap px-4 pt-4 text-sm leading-6 text-ink sm:px-5">{reel.text}</p>}
-        <div className="flex flex-wrap items-center gap-1 px-3 py-3 sm:px-4">{reactions.map(option => <button key={option.type} type="button" onClick={() => react(reel, option.type)} aria-label={option.type} aria-pressed={ownReaction === option.type} className={`grid h-9 min-w-9 place-items-center rounded-full px-2 text-sm ${ownReaction === option.type ? 'bg-blush' : 'hover:bg-cream'}`}>{option.emoji}</button>)}<span className="ml-1 text-[11px] text-muted">{reactionCount} reactions</span><span className="ml-auto inline-flex items-center gap-1 text-[11px] text-muted"><MessageCircle size={14} /> {reel.comments?.length || 0}</span></div>
-        {reel.comments?.length > 0 && <div className="max-h-40 space-y-2 overflow-y-auto border-t border-line px-4 py-3">{reel.comments.map(item => <p key={item._id} className="break-words text-xs leading-5"><span className="font-semibold text-ink">{item.author?.username || 'friend'}</span><span className="ml-2 text-muted">{item.text}</span></p>)}</div>}
+        <div className="flex items-center gap-2 border-y border-line px-3 py-2 sm:px-4"><ReactionBar reactions={reel.reactions || []} myReaction={ownReaction} onReact={type => react(reel, type)} /><span className="inline-flex shrink-0 items-center gap-1 text-[11px] text-muted"><MessageCircle size={14} /> {reel.comments?.length || 0}</span></div>
+        {reel.comments?.length > 0 && <div className="max-h-40 space-y-2 overflow-y-auto border-b border-line px-4 py-3">{reel.comments.map(item => <div key={item._id} className="flex items-start gap-2.5"><Link to={'/u/' + item.author?.username} className="shrink-0"><Avatar person={item.author} /></Link><p className="min-w-0 break-words pt-1 text-xs leading-5"><Link to={'/u/' + item.author?.username} className="font-semibold text-ink hover:text-roseDark">{item.author?.name || '@' + (item.author?.username || 'friend')}</Link><span className="ml-2 text-muted">{item.text}</span></p></div>)}</div>}
         <form onSubmit={event => comment(event, reel)} className="flex items-center gap-2 border-t border-line px-4 py-3"><input className="field h-10 min-w-0 flex-1 rounded-full bg-cream/60 px-4 text-xs" value={commentDrafts[reel._id] || ''} onChange={event => setCommentDrafts(current => ({ ...current, [reel._id]: event.target.value }))} maxLength={500} placeholder="Comment on this reel..." /><button disabled={!(commentDrafts[reel._id] || '').trim()} aria-label="Send comment" className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-roseDark hover:bg-blush disabled:opacity-40"><Send size={15} /></button></form>
       </GlassCard>;
     })}</div>}

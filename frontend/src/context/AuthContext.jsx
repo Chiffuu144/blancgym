@@ -32,8 +32,10 @@ export function AuthProvider({ children }) {
   const addMeal = useCallback((meal) => request('/nutrition/meals', { method: 'POST', body: JSON.stringify(meal) }, token), [token]);
   const removeMeal = useCallback((mealId) => request(`/nutrition/meals/${encodeURIComponent(mealId)}`, { method: 'DELETE' }, token), [token]);
   const getFriends = useCallback(async () => (await request('/community/friends', {}, token)).friends, [token]);
+  const getFriendRequests = useCallback(() => request('/community/friends/requests', {}, token), [token]);
   const searchUsers = useCallback(async (query) => (await request(`/community/users?query=${encodeURIComponent(query)}`, {}, token)).users, [token]);
   const addFriend = useCallback((id) => request(`/community/friends/${encodeURIComponent(id)}`, { method: 'PUT' }, token), [token]);
+  const respondFriendRequest = useCallback((id, action) => request(`/community/friends/${encodeURIComponent(id)}/request`, { method: 'POST', body: JSON.stringify({ action }) }, token), [token]);
   const removeFriend = useCallback((id) => request(`/community/friends/${encodeURIComponent(id)}`, { method: 'DELETE' }, token), [token]);
   const getMessages = useCallback(async (id) => (await request(`/community/messages/${encodeURIComponent(id)}`, {}, token)).messages, [token]);
   const sendMessage = useCallback(async (id, text) => (await request(`/community/messages/${encodeURIComponent(id)}`, { method: 'POST', body: JSON.stringify({ text }) }, token)).message, [token]);
@@ -48,7 +50,7 @@ export function AuthProvider({ children }) {
   const getSocialProfile = useCallback(async (username) => request(`/community/profile/${encodeURIComponent(username)}`, {}, token), [token]);
   const followUser = useCallback((username) => request(`/community/profile/${encodeURIComponent(username)}/follow`, { method: 'PUT' }, token), [token]);
   const unfollowUser = useCallback((username) => request(`/community/profile/${encodeURIComponent(username)}/follow`, { method: 'DELETE' }, token), [token]);
-  const value = useMemo(() => ({ user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage, getFeed, getReels, createPost, deletePost, reactToPost, addPostComment, getStories, createStory, getSocialProfile, followUser, unfollowUser }), [user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage, getFeed, getReels, createPost, deletePost, reactToPost, addPostComment, getStories, createStory, getSocialProfile, followUser, unfollowUser]);
+  const value = useMemo(() => ({ user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, getFriendRequests, searchUsers, addFriend, respondFriendRequest, removeFriend, getMessages, sendMessage, getFeed, getReels, createPost, deletePost, reactToPost, addPostComment, getStories, createStory, getSocialProfile, followUser, unfollowUser }), [user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, getFriendRequests, searchUsers, addFriend, respondFriendRequest, removeFriend, getMessages, sendMessage, getFeed, getReels, createPost, deletePost, reactToPost, addPostComment, getStories, createStory, getSocialProfile, followUser, unfollowUser]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

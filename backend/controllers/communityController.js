@@ -21,12 +21,22 @@ export async function getFriends(req, res, next) {
   } catch (error) { next(error); }
 }
 
+export async function getFriendRequests(req, res, next) {
+  try {
+    const [user, suggestions] = await Promise.all([
+      User.findById(req.user._id).populate({ path: 'friendRequests', select: 'username name profileImage' }).populate({ path: 'sentFriendRequests', select: 'username name profileImage' }).lean(),
+      User.find({ _id: { $ne: req.user._id, $nin: [...(req.user.friends || []), ...(req.user.friendRequests || []), ...(req.user.sentFriendRequests || [])] } }).select('username name profileImage').sort({ createdAt: -1 }).limit(8).lean()
+    ]);
+    res.json({ requests: (user?.friendRequests || []).map(friendCard), sent: (user?.sentFriendRequests || []).map(friendCard), suggestions: suggestions.map(friendCard) });
+  } catch (error) { next(error); }
+}
+
 export async function searchUsers(req, res, next) {
   try {
     const query = String(req.query.query || '').trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     if (query.length < 2) return res.json({ users: [] });
     const users = await User.find({
-      _id: { $ne: req.user._id, $nin: req.user.friends || [] },
+      _id: { $ne: req.user._id, $nin: [...(req.user.friends || []), ...(req.user.friendRequests || []), ...(req.user.sentFriendRequests || [])] },
       username: { $regex: `^${query}`, $options: 'i' }
     }).select('username name profileImage').limit(12).lean();
     res.json({ users: users.map(friendCard) });
@@ -37,13 +47,34 @@ export async function addFriend(req, res, next) {
   try {
     const { userId } = req.params;
     if (!mongoose.isValidObjectId(userId) || String(req.user._id) === userId) return res.status(400).json({ message: 'Choose a valid account to add.' });
-    const person = await User.findById(userId).select('username name profileImage');
+    const person = await User.findById(userId).select('username name profileImage friends friendRequests sentFriendRequests');
     if (!person) return res.status(404).json({ message: 'That account could not be found.' });
+    if (person.friends.some(id => String(id) === String(req.user._id))) return res.status(409).json({ message: 'You are already friends.' });
+    if (person.friendRequests.some(id => String(id) === String(req.user._id))) {
+      return res.status(409).json({ message: 'This person has already sent you a request. Accept it in Friend requests.' });
+    }
+    if (person.sentFriendRequests.some(id => String(id) === String(req.user._id))) return res.json({ message: 'Friend request already sent.', pending: true });
     await Promise.all([
-      User.updateOne({ _id: req.user._id }, { $addToSet: { friends: person._id, following: person._id, followers: person._id } }),
-      User.updateOne({ _id: person._id }, { $addToSet: { friends: req.user._id, following: req.user._id, followers: req.user._id } })
+      User.updateOne({ _id: req.user._id }, { $addToSet: { sentFriendRequests: person._id } }),
+      User.updateOne({ _id: person._id }, { $addToSet: { friendRequests: req.user._id } })
     ]);
-    res.json({ friend: friendCard(person) });
+    res.status(201).json({ message: 'Friend request sent.', pending: true, user: friendCard(person) });
+  } catch (error) { next(error); }
+}
+
+export async function respondFriendRequest(req, res, next) {
+  try {
+    const { userId } = req.params;
+    const action = req.body.action;
+    if (!mongoose.isValidObjectId(userId) || !['accept', 'remove'].includes(action)) return res.status(400).json({ message: 'Choose a valid friend request action.' });
+    const sender = await User.findOne({ _id: userId, sentFriendRequests: req.user._id }).select('username name profileImage');
+    if (!sender) return res.status(404).json({ message: 'This friend request is no longer available.' });
+    const operations = [
+      User.updateOne({ _id: req.user._id }, { $pull: { friendRequests: sender._id }, ...(action === 'accept' ? { $addToSet: { friends: sender._id } } : {}) }),
+      User.updateOne({ _id: sender._id }, { $pull: { sentFriendRequests: req.user._id }, ...(action === 'accept' ? { $addToSet: { friends: req.user._id } } : {}) })
+    ];
+    await Promise.all(operations);
+    res.json({ message: action === 'accept' ? 'Friend request accepted.' : 'Friend request removed.', friend: action === 'accept' ? friendCard(sender) : null });
   } catch (error) { next(error); }
 }
 
@@ -209,6 +240,8 @@ export async function getSocialProfile(req, res, next) {
       isOwnProfile: String(profile._id) === String(req.user._id),
       isFollowing: (req.user.following || []).some(id => String(id) === String(profile._id)),
       isFriend: (req.user.friends || []).some(id => String(id) === String(profile._id)),
+      hasIncomingFriendRequest: (req.user.friendRequests || []).some(id => String(id) === String(profile._id)),
+      hasSentFriendRequest: (req.user.sentFriendRequests || []).some(id => String(id) === String(profile._id)),
       posts
     });
   } catch (error) { next(error); }
@@ -219,11 +252,15 @@ export async function followUser(req, res, next) {
     const profile = await User.findOne({ username: String(req.params.username || '').toLowerCase() }).select('_id');
     if (!profile) return res.status(404).json({ message: 'Profile not found.' });
     if (String(profile._id) === String(req.user._id)) return res.status(400).json({ message: 'You cannot follow your own profile.' });
+    const other = await User.findById(profile._id).select('friends friendRequests sentFriendRequests');
+    if (other.friends.some(id => String(id) === String(req.user._id))) return res.json({ message: 'Already friends.', isFriend: true });
+    if (other.friendRequests.some(id => String(id) === String(req.user._id))) return res.json({ message: 'Friend request already sent.', pending: true });
+    if (other.sentFriendRequests.some(id => String(id) === String(req.user._id))) return res.status(409).json({ message: 'This person already sent you a request. Open Friends to accept it.' });
     await Promise.all([
-      User.updateOne({ _id: req.user._id }, { $addToSet: { following: profile._id } }),
-      User.updateOne({ _id: profile._id }, { $addToSet: { followers: req.user._id } })
+      User.updateOne({ _id: req.user._id }, { $addToSet: { sentFriendRequests: profile._id } }),
+      User.updateOne({ _id: profile._id }, { $addToSet: { friendRequests: req.user._id } })
     ]);
-    res.json({ message: 'Following.' });
+    res.json({ message: 'Friend request sent.', pending: true });
   } catch (error) { next(error); }
 }
 

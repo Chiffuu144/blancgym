@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import { protect } from '../middleware/auth.js';
-import { addFriend, addPostComment, createPost, createStory, deletePost, followUser, getFeed, getFriends, getMessages, getReels, getSocialProfile, getStories, reactToPost, removeFriend, searchUsers, sendMessage, unfollowUser } from '../controllers/communityController.js';
+import { addFriend, addPostComment, createPost, createStory, deletePost, followUser, getFeed, getFriendRequests, getFriends, getMessages, getReels, getSocialProfile, getStories, reactToPost, removeFriend, respondFriendRequest, searchUsers, sendMessage, unfollowUser } from '../controllers/communityController.js';
 
 const router = Router();
 router.use(protect);
 router.get('/friends', getFriends);
+router.get('/friends/requests', getFriendRequests);
 router.get('/users', searchUsers);
 router.put('/friends/:userId', addFriend);
+router.post('/friends/:userId/request', respondFriendRequest);
 router.delete('/friends/:userId', removeFriend);
 router.get('/messages/:userId', getMessages);
 router.post('/messages/:userId', sendMessage);

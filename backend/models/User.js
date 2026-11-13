@@ -19,6 +19,8 @@ const userSchema = new mongoose.Schema({
   tdee: { type: Number, required: true },
   targetDailyCalories: { type: Number, required: true },
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  sentFriendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   featuredPhotos: { type: [String], default: [] }

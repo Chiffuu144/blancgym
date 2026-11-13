@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import { randomUUID } from 'node:crypto';
+import { v2 as cloudinary } from 'cloudinary';
 import User from '../models/User.js';
 import Message from '../models/Message.js';
 import CommunityPost from '../models/CommunityPost.js';
@@ -123,14 +125,43 @@ export async function getMessages(req, res, next) {
   } catch (error) { next(error); }
 }
 
+export async function getMessageUploadSignature(req, res, next) {
+  const { userId } = req.params;
+  if (!mongoose.isValidObjectId(userId)) return res.status(400).json({ message: 'Choose a valid friend.' });
+  try {
+    if (!await areFriends(req.user._id, userId)) return res.status(403).json({ message: 'Add each other as friends before messaging.' });
+  } catch (error) { return next(error); }
+  const { CLOUDINARY_CLOUD_NAME: cloudName, CLOUDINARY_API_KEY: apiKey, CLOUDINARY_API_SECRET: apiSecret } = process.env;
+  if (!cloudName || !apiKey || !apiSecret) return res.status(503).json({ message: 'Media uploads are not configured yet. Add the Cloudinary settings to the backend.' });
+  const timestamp = Math.floor(Date.now() / 1000);
+  const folder = `blanc/messages/${req.user._id}`;
+  const publicId = `${folder}/${randomUUID()}`;
+  const signature = cloudinary.utils.api_sign_request({ folder, public_id: publicId, timestamp }, apiSecret);
+  res.json({ cloudName, apiKey, timestamp, folder, publicId, signature });
+}
+
 export async function sendMessage(req, res, next) {
   try {
     const { userId } = req.params;
     const text = typeof req.body.text === 'string' ? req.body.text.trim() : '';
+    const incomingMedia = req.body.media;
     if (!mongoose.isValidObjectId(userId)) return res.status(400).json({ message: 'Choose a valid friend.' });
-    if (!text || text.length > 2000) return res.status(400).json({ message: 'Message must be 1 to 2,000 characters.' });
+    if (text.length > 2000) return res.status(400).json({ message: 'Message must be 2,000 characters or fewer.' });
+    if (!text && !incomingMedia) return res.status(400).json({ message: 'Write a message or attach a photo or video.' });
+    let media;
+    if (incomingMedia) {
+      const { CLOUDINARY_CLOUD_NAME: cloudName } = process.env;
+      const resourceType = incomingMedia.resourceType;
+      const expectedFolder = `blanc/messages/${req.user._id}/`;
+      let assetUrl;
+      try { assetUrl = new URL(incomingMedia.url); } catch { return res.status(400).json({ message: 'Choose a valid Cloudinary attachment.' }); }
+      if (!cloudName || !['image', 'video'].includes(resourceType) || typeof incomingMedia.publicId !== 'string' || !incomingMedia.publicId.startsWith(expectedFolder) || assetUrl.protocol !== 'https:' || assetUrl.hostname !== 'res.cloudinary.com' || !assetUrl.pathname.startsWith(`/${cloudName}/${resourceType}/upload/`) || !assetUrl.pathname.includes(`/${incomingMedia.publicId}`)) {
+        return res.status(400).json({ message: 'Choose a valid Cloudinary attachment.' });
+      }
+      media = { url: assetUrl.toString(), publicId: incomingMedia.publicId, resourceType, format: String(incomingMedia.format || '').slice(0, 20) };
+    }
     if (!await areFriends(req.user._id, userId)) return res.status(403).json({ message: 'Add each other as friends before messaging.' });
-    const message = await Message.create({ sender: req.user._id, recipient: userId, text });
+    const message = await Message.create({ sender: req.user._id, recipient: userId, text, media });
     res.status(201).json({ message: message.toObject() });
   } catch (error) { next(error); }
 }

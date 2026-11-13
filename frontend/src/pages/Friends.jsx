@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, Check, MessageCircle, Plus, Search, Send, UserMinus, Users, UserRound, X } from 'lucide-react';
+import { ArrowLeft, Check, ImagePlus, MessageCircle, Plus, Search, Send, UserMinus, Users, UserRound, X } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
 import GlassCard from '../components/GlassCard.jsx';
 import Navbar from '../components/Navbar.jsx';
@@ -12,7 +12,7 @@ function Avatar({ person, size = 'h-11 w-11' }) {
 }
 
 export default function Friends() {
-  const { user, getFriends, getFriendRequests, searchUsers, addFriend, respondFriendRequest, removeFriend, getMessages, sendMessage } = useAuth();
+  const { user, getFriends, getFriendRequests, searchUsers, addFriend, respondFriendRequest, removeFriend, getMessages, getMessageUploadSignature, sendMessage } = useAuth();
   const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab');
   const [friends, setFriends] = useState([]);
@@ -25,6 +25,7 @@ export default function Friends() {
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState('');
+  const [attachment, setAttachment] = useState(null);
   const [error, setError] = useState('');
   const [confirmation, setConfirmation] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -92,11 +93,42 @@ export default function Friends() {
   async function submitMessage(event) {
     event.preventDefault();
     const text = draft.trim();
-    if (!selected || !text || busy) return;
+    if (!selected || (!text && !attachment) || busy) return;
     setBusy(true); setError('');
-    try { const saved = await sendMessage(selected.id, text); setMessages(current => [...current.filter(item => item._id !== saved._id), saved]); setDraft(''); }
+    try {
+      let media;
+      if (attachment) {
+        const signature = await getMessageUploadSignature(selected.id);
+        const form = new FormData();
+        form.append('file', attachment);
+        form.append('api_key', signature.apiKey);
+        form.append('timestamp', signature.timestamp);
+        form.append('folder', signature.folder);
+        form.append('public_id', signature.publicId);
+        form.append('signature', signature.signature);
+        const resourceType = attachment.type.startsWith('video/') ? 'video' : 'image';
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${signature.cloudName}/${resourceType}/upload`, { method: 'POST', body: form });
+        const uploaded = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(uploaded.error?.message || 'The attachment could not be uploaded. Please try again.');
+        media = { url: uploaded.secure_url, publicId: uploaded.public_id, resourceType, format: uploaded.format };
+      }
+      const saved = await sendMessage(selected.id, { text, media });
+      setMessages(current => [...current.filter(item => item._id !== saved._id), saved]);
+      setDraft(''); setAttachment(null);
+    }
     catch (requestError) { setError(requestError.message); }
     finally { setBusy(false); }
+  }
+
+  function chooseAttachment(event) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'video/mp4', 'video/webm', 'video/quicktime'];
+    if (!allowed.includes(file.type)) { setError('Choose a JPG, PNG, WebP, MP4, WebM, or MOV file.'); return; }
+    const limit = file.type.startsWith('video/') ? 50 : 10;
+    if (file.size > limit * 1024 * 1024) { setError(`Choose a ${file.type.startsWith('video/') ? 'video' : 'photo'} smaller than ${limit} MB.`); return; }
+    setError(''); setAttachment(file);
   }
 
   const displayName = person => person.name && person.name !== person.username ? person.name : `@${person.username}`;
@@ -125,8 +157,8 @@ export default function Friends() {
           {selected ? <>
             <div className="flex items-center gap-3 border-b border-line px-4 py-3 sm:px-6 sm:py-4"><button type="button" onClick={() => { setSelected(null); setMobileChatOpen(false); }} className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full px-2 text-xs font-semibold text-roseDark hover:bg-blush"><ArrowLeft size={16} /><span className="hidden sm:inline">Back to friends</span></button><Avatar person={selected} size="h-10 w-10" /><div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold text-ink">{displayName(selected)}</p><p className="text-xs text-muted">@{selected.username}</p></div><span className="rounded-full bg-blush px-3 py-1 text-[10px] font-semibold text-roseDark">Friend</span></div>
             <div className="flex-1 space-y-3 overflow-y-auto bg-cream/30 px-4 py-5 sm:px-6">{messages.length === 0 && <div className="grid min-h-[350px] place-items-center"><div className="max-w-xs text-center"><span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-blush text-roseDark"><MessageCircle size={21} /></span><p className="mt-3 text-sm font-medium text-ink">Say hello to {selected.username}</p><p className="mt-1 text-xs leading-5 text-muted">Your conversation appears here. Keep it kind and encouraging.</p></div></div>}
-              <AnimatePresence initial={false}>{messages.map(message => { const own = String(message.sender) === String(user?.id); return <motion.div key={message._id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className={`flex ${own ? 'justify-end' : 'justify-start'}`}><div className={`max-w-[82%] rounded-2xl px-4 py-2.5 ${own ? 'rounded-br-md bg-roseDark text-white' : 'rounded-bl-md border border-line bg-white text-ink'}`}><p className="whitespace-pre-wrap break-words text-sm leading-5">{message.text}</p><time className={`mt-1 block text-right text-[10px] ${own ? 'text-white/70' : 'text-muted'}`}>{new Date(message.createdAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</time></div></motion.div>; })}</AnimatePresence><div ref={bottomRef} /></div>
-            <form onSubmit={submitMessage} className="flex items-end gap-2 border-t border-line bg-white/70 p-4 sm:p-5"><textarea className="field min-h-[48px] max-h-32 resize-y py-3" value={draft} onChange={event => setDraft(event.target.value)} placeholder={`Message @${selected.username}`} maxLength={2000} rows={1} aria-label="Message" /><button disabled={!draft.trim() || busy} className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-roseDark text-white disabled:opacity-45" aria-label="Send message"><Send size={17} /></button></form>
+              <AnimatePresence initial={false}>{messages.map(message => { const own = String(message.sender) === String(user?.id); return <motion.div key={message._id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className={`flex ${own ? 'justify-end' : 'justify-start'}`}><div className={`max-w-[82%] rounded-2xl px-4 py-2.5 ${own ? 'rounded-br-md bg-roseDark text-white' : 'rounded-bl-md border border-line bg-white text-ink'}`}>{message.media?.resourceType === 'image' && <img src={message.media.url} alt="Shared attachment" loading="lazy" className="mb-2 max-h-72 rounded-xl object-contain" />}{message.media?.resourceType === 'video' && <video src={message.media.url} controls playsInline preload="metadata" className="mb-2 max-h-72 max-w-full rounded-xl" />}{message.text && <p className="whitespace-pre-wrap break-words text-sm leading-5">{message.text}</p>}<time className={`mt-1 block text-right text-[10px] ${own ? 'text-white/70' : 'text-muted'}`}>{new Date(message.createdAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</time></div></motion.div>; })}</AnimatePresence><div ref={bottomRef} /></div>
+            <form onSubmit={submitMessage} className="border-t border-line bg-white/70 p-4 sm:p-5">{attachment && <div className="mb-3 flex items-center gap-2 rounded-xl bg-cream/70 px-3 py-2 text-xs text-muted"><ImagePlus size={14} /><span className="min-w-0 flex-1 truncate">{attachment.name} · {(attachment.size / (1024 * 1024)).toFixed(1)} MB</span><button type="button" onClick={() => setAttachment(null)} aria-label="Remove attachment" className="rounded-full p-1 hover:bg-white"><X size={14} /></button></div>}<div className="flex items-end gap-2"><input type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime" onChange={chooseAttachment} className="sr-only" id="message-attachment" /><label htmlFor="message-attachment" className={`inline-flex h-12 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl border border-line bg-white px-3 text-xs font-semibold text-roseDark hover:bg-blush ${busy ? 'pointer-events-none opacity-50' : ''}`} title="Attach a photo or video"><ImagePlus size={17} /><span className="hidden sm:inline">Photo / video</span></label><textarea className="field min-h-[48px] max-h-32 resize-y py-3" value={draft} onChange={event => setDraft(event.target.value)} placeholder={`Message @${selected.username}`} maxLength={2000} rows={1} aria-label="Message" /><button disabled={(!draft.trim() && !attachment) || busy} className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-roseDark text-white disabled:opacity-45" aria-label="Send message">{busy ? <span className="text-[10px]">…</span> : <Send size={17} />}</button></div>{busy && attachment && <p className="mt-2 text-[11px] text-muted">Uploading and sending…</p>}</form>
           </> : <div className="grid flex-1 place-items-center p-6"><div className="max-w-sm text-center"><span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-blush text-roseDark"><MessageCircle size={23} /></span><h2 className="mt-4 font-display text-xl font-medium text-ink">A little encouragement goes a long way.</h2><p className="mt-2 text-sm leading-6 text-muted">Choose someone from your friends list to start a conversation.</p></div></div>}
         </GlassCard>
       </section>

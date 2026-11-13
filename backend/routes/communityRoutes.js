@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { protect } from '../middleware/auth.js';
-import { addFriend, addPostComment, createPost, createStory, deletePost, followUser, getFeed, getFriendRequests, getFriends, getMessages, getNotifications, getReels, getSocialProfile, getStories, markNotificationsRead, reactToPost, removeFriend, respondFriendRequest, searchUsers, sendMessage, unfollowUser } from '../controllers/communityController.js';
+import { addFriend, addPostComment, createPost, createStory, deletePost, followUser, getFeed, getFriendRequests, getFriends, getMessages, getMessageUploadSignature, getNotifications, getReels, getSocialProfile, getStories, markNotificationsRead, reactToPost, removeFriend, respondFriendRequest, searchUsers, sendMessage, unfollowUser } from '../controllers/communityController.js';
 
 const router = Router();
 router.use(protect);
@@ -13,6 +13,7 @@ router.put('/friends/:userId', addFriend);
 router.post('/friends/:userId/request', respondFriendRequest);
 router.delete('/friends/:userId', removeFriend);
 router.get('/messages/:userId', getMessages);
+router.post('/messages/:userId/upload-signature', getMessageUploadSignature);
 router.post('/messages/:userId', sendMessage);
 router.get('/feed', getFeed);
 router.get('/feed/reels', getReels);

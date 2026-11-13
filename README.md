@@ -32,6 +32,17 @@ Registration is a four-step profile wizard. The API uses the revised Harris-Bene
 
 Meal photos can be attached to a log entry. Enter calorie estimates manually before saving.
 
+### Chat photo and video uploads
+
+Friend chat attachments are uploaded directly from the browser to Cloudinary using a short-lived signature created by the authenticated backend. The API secret stays on the backend. Images up to 10 MB and videos up to 50 MB are accepted (JPG, PNG, WebP, MP4, WebM, and MOV).
+
+1. Create a Cloudinary account and open the **Dashboard**. Copy the **Cloud name**, **API Key**, and **API Secret** from the account details.
+2. Add `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` to `backend/.env`. Keep the API secret private; never add it to a `VITE_` variable or frontend file.
+3. Restart the backend. For Render, add the same three variables under the backend service's **Environment** settings and redeploy.
+4. No unsigned upload preset is needed. The app signs each upload on the backend, then sends the file directly to Cloudinary.
+
+The upload signature is limited to the signed-in user's chat folder and is issued only when messaging a friend. Cloudinary's official guides cover [signed Node.js uploads](https://cloudinary.com/documentation/node_image_and_video_upload) and [upload authentication](https://cloudinary.com/documentation/authentication_signatures).
+
 For MongoDB Atlas, choose **Connect -> Drivers -> Node.js**, create a database user, and add the backend machine's IP to the project's IP access list. Put the connection URI in `backend/.env` as `MONGODB_URI` and include `blanc` as the database path. If SRV DNS lookups fail, Atlas can provide a standard non-SRV connection URI. Reserved characters in the username or password must be percent-encoded.
 
 ## Structure

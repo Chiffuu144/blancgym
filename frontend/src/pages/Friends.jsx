@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, MessageCircle, Plus, Search, Send, UserMinus, Users, UserRound } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import GlassCard from '../components/GlassCard.jsx';
 import Navbar from '../components/Navbar.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -12,6 +12,8 @@ function Avatar({ person, size = 'h-11 w-11' }) {
 
 export default function Friends() {
   const { user, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage } = useAuth();
+  const [searchParams] = useSearchParams();
+  const tab = searchParams.get('tab');
   const [friends, setFriends] = useState([]);
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState('');
@@ -29,6 +31,7 @@ export default function Friends() {
   }, [getFriends]);
 
   useEffect(() => { refreshFriends(); }, [refreshFriends]);
+  useEffect(() => { if (tab === 'messages' && friends.length && !selected) setSelected(friends[0]); }, [tab, friends, selected]);
 
   useEffect(() => {
     let active = true;
@@ -79,7 +82,7 @@ export default function Friends() {
 
   const displayName = person => person.name && person.name !== person.username ? person.name : `@${person.username}`;
 
-  return <div className="min-h-screen pb-16">
+  return <div className="min-h-screen pb-28 lg:pb-16">
     <Navbar />
     <main className="page-shell">
       <Link to="/dashboard" className="mt-8 inline-flex items-center gap-2 text-xs text-muted hover:text-ink"><ArrowLeft size={14} /> Back to your space</Link>
@@ -87,9 +90,9 @@ export default function Friends() {
       {error && <p role="alert" className="mb-4 rounded-xl border border-[#d9a9ae] bg-[#f3e4e3] px-4 py-3 text-sm text-roseDark">{error}</p>}
       <section className="grid gap-5 lg:grid-cols-[.78fr_1.22fr]">
         <div className="space-y-5">
-          <GlassCard className="p-5 sm:p-6">
+          <GlassCard id="find-friends" className="p-5 sm:p-6">
             <div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-blush text-roseDark"><Search size={17} /></span><div><h2 className="font-display text-xl font-medium text-ink">Find a friend</h2><p className="text-xs text-muted">Search by username.</p></div></div>
-            <form onSubmit={findPeople} className="mt-5 flex gap-2"><input className="field min-w-0 flex-1" value={query} onChange={event => setQuery(event.target.value)} placeholder="Type a username" minLength={2} maxLength={32} /><button disabled={searching || query.trim().length < 2} className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-roseDark text-white disabled:opacity-50" aria-label="Search"><Search size={17} /></button></form>
+            <form onSubmit={findPeople} className="mt-5 flex gap-2"><input autoFocus={tab === 'search'} className="field min-w-0 flex-1" value={query} onChange={event => setQuery(event.target.value)} placeholder="Type a username" minLength={2} maxLength={32} /><button disabled={searching || query.trim().length < 2} className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-roseDark text-white disabled:opacity-50" aria-label="Search"><Search size={17} /></button></form>
             <div className="mt-4 space-y-2">{searching && <p className="text-xs text-muted">Looking for people...</p>}{results.map(person => <div key={person.id} className="flex items-center gap-3 rounded-2xl bg-cream/60 p-3"><Avatar person={person} size="h-10 w-10" /><div className="min-w-0 flex-1"><p className="truncate text-sm font-medium text-ink">{displayName(person)}</p><p className="text-xs text-muted">@{person.username}</p></div><button type="button" disabled={busy} onClick={() => handleAdd(person)} className="flex items-center gap-1.5 rounded-full bg-blush px-3 py-2 text-xs font-semibold text-roseDark disabled:opacity-50"><Plus size={14} /> Add</button></div>)}{!searching && query.trim().length >= 2 && results.length === 0 && <p className="rounded-xl bg-cream/60 px-3 py-4 text-xs leading-5 text-muted">No new accounts found for that username.</p>}</div>
           </GlassCard>
           <GlassCard className="p-5 sm:p-6"><div className="mb-4 flex items-center justify-between"><div><p className="text-[11px] font-semibold uppercase tracking-[.15em] text-roseDark">Your people</p><h2 className="mt-1 font-display text-xl font-medium text-ink">Friends</h2></div><span className="rounded-full bg-blush px-3 py-1 text-xs font-semibold text-roseDark">{friends.length}</span></div>

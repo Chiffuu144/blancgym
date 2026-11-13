@@ -33,7 +33,7 @@ export default function Dashboard() {
 
   useEffect(() => { loadNutrition(); }, [loadNutrition]);
 
-  return <div className="min-h-screen pb-16">
+  return <div className="min-h-screen pb-28 lg:pb-16">
     <Navbar />
     <main className="page-shell">
       <motion.section

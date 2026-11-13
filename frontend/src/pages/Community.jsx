@@ -114,7 +114,7 @@ export default function Community() {
 
   const myStory = storyPeople.find(story => authorId(story.author) === String(user?.id));
 
-  return <div className="min-h-screen pb-16">
+  return <div className="min-h-screen pb-28 lg:pb-16">
     <Navbar />
     <main className="page-shell max-w-[820px]">
       <Link to="/dashboard" className="mt-7 inline-flex items-center gap-2 text-xs text-muted hover:text-ink"><ArrowLeft size={14} /> Back to your space</Link>
@@ -130,7 +130,7 @@ export default function Community() {
       </GlassCard>
 
       <GlassCard className="mb-5 p-4 sm:p-5">
-        <form onSubmit={publishPost}>
+        <form id="post-composer" onSubmit={publishPost}>
           <div className="flex items-start gap-3"><Avatar person={user} size="h-10 w-10" /><label className="min-w-0 flex-1"><span className="sr-only">Write a community post</span><textarea className="field min-h-[88px] resize-y border-0 bg-cream/65 px-4 py-3 text-sm focus:ring-2 focus:ring-rose/50" value={text} onChange={event => setText(event.target.value)} maxLength={1000} placeholder="Share a workout, a small win, or a little encouragement..." /></label></div>
           {images.length > 0 && <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">{images.map((image, index) => <div key={index} className="relative aspect-square overflow-hidden rounded-xl"><img src={image} alt={`Post attachment ${index + 1}`} className="h-full w-full object-cover" /><button type="button" onClick={() => setImages(current => current.filter((_, i) => i !== index))} aria-label="Remove photo" className="absolute right-2 top-2 rounded-full bg-white/90 p-1.5 text-ink"><X size={14} /></button></div>)}</div>}
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3"><label className="inline-flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 text-xs font-medium text-muted hover:bg-cream hover:text-roseDark"><ImagePlus size={16} /> Add photos<input type="file" accept="image/jpeg,image/png,image/webp" multiple className="sr-only" onChange={choosePostImages} disabled={images.length >= 4} /></label><span className="ml-auto mr-2 text-[10px] text-muted">{text.length}/1000</span><button disabled={busy || (!text.trim() && images.length === 0)} className="inline-flex items-center gap-2 rounded-full bg-roseDark px-4 py-2.5 text-xs font-semibold text-white disabled:opacity-50">{busy ? 'Posting...' : 'Share post'}<Send size={14} /></button></div>
@@ -142,7 +142,7 @@ export default function Community() {
         const mine = post.reactions?.find(item => authorId(item.user) === String(user?.id))?.type;
         const counts = (post.reactions || []).reduce((acc, reaction) => ({ ...acc, [reaction.type]: (acc[reaction.type] || 0) + 1 }), {});
         return <GlassCard key={post._id} className="overflow-hidden p-0">
-          <div className="flex items-center gap-3 px-4 py-4 sm:px-5"><Avatar person={post.author} size="h-10 w-10" /><div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold text-ink">{displayName(post.author)}</p><p className="text-[11px] text-muted">@{post.author?.username} · {formatTime(post.createdAt)}</p></div>{own && <button type="button" onClick={() => removePost(post)} className="rounded-full p-2 text-muted hover:bg-blush hover:text-roseDark" aria-label="Delete post"><Trash2 size={15} /></button>}</div>
+          <div className="flex items-center gap-3 px-4 py-4 sm:px-5"><Link to={`/u/${post.author?.username}`}><Avatar person={post.author} size="h-10 w-10" /></Link><div className="min-w-0 flex-1"><Link to={`/u/${post.author?.username}`} className="block truncate text-sm font-semibold text-ink hover:text-roseDark">{displayName(post.author)}</Link><p className="text-[11px] text-muted">@{post.author?.username} · {formatTime(post.createdAt)}</p></div>{own && <button type="button" onClick={() => removePost(post)} className="rounded-full p-2 text-muted hover:bg-blush hover:text-roseDark" aria-label="Delete post"><Trash2 size={15} /></button>}</div>
           {post.text && <p className="whitespace-pre-wrap break-words px-4 pb-4 text-sm leading-6 text-ink sm:px-5">{post.text}</p>}
           {post.images?.length > 0 && <div className={`grid gap-1 ${post.images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>{post.images.map((image, index) => <img key={index} src={image} alt={`Photo shared by ${post.author?.username}`} className={`${post.images.length === 1 ? 'max-h-[620px]' : 'aspect-square'} w-full bg-cream object-cover`} loading="lazy" />)}</div>}
           <div className="px-4 pt-3 sm:px-5">{post.reactions?.length > 0 && <p className="mb-2 text-[11px] text-muted">{reactionOptions.filter(option => counts[option.id]).map(option => `${option.emoji} ${counts[option.id]}`).join('  ·  ')}</p>}

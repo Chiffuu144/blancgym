@@ -40,8 +40,8 @@ export async function addFriend(req, res, next) {
     const person = await User.findById(userId).select('username name profileImage');
     if (!person) return res.status(404).json({ message: 'That account could not be found.' });
     await Promise.all([
-      User.updateOne({ _id: req.user._id }, { $addToSet: { friends: person._id } }),
-      User.updateOne({ _id: person._id }, { $addToSet: { friends: req.user._id } })
+      User.updateOne({ _id: req.user._id }, { $addToSet: { friends: person._id, following: person._id, followers: person._id } }),
+      User.updateOne({ _id: person._id }, { $addToSet: { friends: req.user._id, following: req.user._id, followers: req.user._id } })
     ]);
     res.json({ friend: friendCard(person) });
   } catch (error) { next(error); }
@@ -52,8 +52,8 @@ export async function removeFriend(req, res, next) {
     const { userId } = req.params;
     if (!mongoose.isValidObjectId(userId)) return res.status(400).json({ message: 'Choose a valid account.' });
     await Promise.all([
-      User.updateOne({ _id: req.user._id }, { $pull: { friends: userId } }),
-      User.updateOne({ _id: userId }, { $pull: { friends: req.user._id } })
+      User.updateOne({ _id: req.user._id }, { $pull: { friends: userId, following: userId, followers: userId } }),
+      User.updateOne({ _id: userId }, { $pull: { friends: req.user._id, following: req.user._id, followers: req.user._id } })
     ]);
     res.json({ message: 'Friend removed.' });
   } catch (error) { next(error); }
@@ -94,7 +94,7 @@ async function findVisiblePost(user, postId) {
 export async function getFeed(req, res, next) {
   try {
     const posts = await CommunityPost.find({ author: { $in: postAuthors(req.user) } })
-      .sort({ createdAt: -1 }).limit(50)
+      .sort({ createdAt: -1 }).limit(20)
       .populate('author', 'username name profileImage')
       .populate('reactions.user', 'username name profileImage')
       .populate('comments.author', 'username name profileImage')
@@ -177,5 +177,50 @@ export async function createStory(req, res, next) {
     const story = await CommunityStory.create({ author: req.user._id, caption, image, expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) });
     await story.populate('author', 'username name profileImage');
     res.status(201).json({ story });
+  } catch (error) { next(error); }
+}
+
+export async function getSocialProfile(req, res, next) {
+  try {
+    const profile = await User.findOne({ username: String(req.params.username || '').toLowerCase() })
+      .select('name username profileImage featuredPhotos followers following friends goal createdAt').lean();
+    if (!profile) return res.status(404).json({ message: 'Profile not found.' });
+    const [posts, totalPosts] = await Promise.all([
+      CommunityPost.find({ author: profile._id }).select('author text images createdAt').slice('images', 1).sort({ createdAt: -1 }).limit(24).populate('author', 'username name profileImage').lean(),
+      CommunityPost.countDocuments({ author: profile._id })
+    ]);
+    res.json({
+      profile: { id: profile._id, name: profile.name, username: profile.username, profileImage: profile.profileImage || '', featuredPhotos: profile.featuredPhotos || [], goal: profile.goal },
+      stats: { posts: totalPosts, followers: (profile.followers || []).length, following: (profile.following || []).length },
+      isOwnProfile: String(profile._id) === String(req.user._id),
+      isFollowing: (req.user.following || []).some(id => String(id) === String(profile._id)),
+      isFriend: (req.user.friends || []).some(id => String(id) === String(profile._id)),
+      posts
+    });
+  } catch (error) { next(error); }
+}
+
+export async function followUser(req, res, next) {
+  try {
+    const profile = await User.findOne({ username: String(req.params.username || '').toLowerCase() }).select('_id');
+    if (!profile) return res.status(404).json({ message: 'Profile not found.' });
+    if (String(profile._id) === String(req.user._id)) return res.status(400).json({ message: 'You cannot follow your own profile.' });
+    await Promise.all([
+      User.updateOne({ _id: req.user._id }, { $addToSet: { following: profile._id } }),
+      User.updateOne({ _id: profile._id }, { $addToSet: { followers: req.user._id } })
+    ]);
+    res.json({ message: 'Following.' });
+  } catch (error) { next(error); }
+}
+
+export async function unfollowUser(req, res, next) {
+  try {
+    const profile = await User.findOne({ username: String(req.params.username || '').toLowerCase() }).select('_id');
+    if (!profile) return res.status(404).json({ message: 'Profile not found.' });
+    await Promise.all([
+      User.updateOne({ _id: req.user._id }, { $pull: { following: profile._id } }),
+      User.updateOne({ _id: profile._id }, { $pull: { followers: req.user._id } })
+    ]);
+    res.json({ message: 'Unfollowed.' });
   } catch (error) { next(error); }
 }

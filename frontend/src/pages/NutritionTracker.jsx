@@ -95,7 +95,7 @@ export default function NutritionTracker() {
   const meals = nutrition?.meals || [];
   const formattedDate = new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date(`${date}T12:00:00`));
 
-  return <div className="min-h-screen pb-16">
+  return <div className="min-h-screen pb-28 lg:pb-16">
     <dialog ref={warningDialog} className="calorie-warning-dialog" aria-labelledby="calorie-warning-title" aria-describedby="calorie-warning-description" onCancel={event => { event.preventDefault(); closeCalorieWarning(); }} onClick={event => { if (event.target === warningDialog.current) closeCalorieWarning(); }}>
       <AnimatePresence onExitComplete={() => { if (!calorieWarning && warningDialog.current?.open) warningDialog.current.close(); }}>
         {calorieWarning && <motion.div key="calorie-warning" initial={{ opacity: 0, scale: .96, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: .98, y: 5 }} transition={{ duration: .24, ease: [.23, 1, .32, 1] }} className="calorie-warning-card rounded-3xl p-6 sm:p-7">

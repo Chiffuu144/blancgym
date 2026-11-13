@@ -6,7 +6,7 @@ const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 async function request(path, options = {}, token) {
   const response = await fetch(`${API}${path}`, { ...options, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers } });
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.message || (response.status === 404 ? 'This API route is missing. Restart the backend so it loads the latest profile updates.' : `The server could not complete this request (${response.status}). Check that the backend is running and review its log.`));
+  if (!response.ok) throw new Error(data.message || (response.status === 404 && path.startsWith('/community/') ? 'The social features are not on the Render backend yet. Deploy the latest blancgym main branch with backend as the root directory.' : response.status === 404 ? 'This API route is missing. Deploy the latest backend on Render.' : `The server could not complete this request (${response.status}). Check that the backend is running and review its log.`));
   return data;
 }
 
@@ -44,7 +44,10 @@ export function AuthProvider({ children }) {
   const addPostComment = useCallback(async (id, text) => (await request(`/community/feed/posts/${encodeURIComponent(id)}/comments`, { method: 'POST', body: JSON.stringify({ text }) }, token)).post, [token]);
   const getStories = useCallback(async () => (await request('/community/stories', {}, token)).stories, [token]);
   const createStory = useCallback(async (story) => (await request('/community/stories', { method: 'POST', body: JSON.stringify(story) }, token)).story, [token]);
-  const value = useMemo(() => ({ user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage, getFeed, createPost, deletePost, reactToPost, addPostComment, getStories, createStory }), [user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage, getFeed, createPost, deletePost, reactToPost, addPostComment, getStories, createStory]);
+  const getSocialProfile = useCallback(async (username) => request(`/community/profile/${encodeURIComponent(username)}`, {}, token), [token]);
+  const followUser = useCallback((username) => request(`/community/profile/${encodeURIComponent(username)}/follow`, { method: 'PUT' }, token), [token]);
+  const unfollowUser = useCallback((username) => request(`/community/profile/${encodeURIComponent(username)}/follow`, { method: 'DELETE' }, token), [token]);
+  const value = useMemo(() => ({ user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage, getFeed, createPost, deletePost, reactToPost, addPostComment, getStories, createStory, getSocialProfile, followUser, unfollowUser }), [user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage, getFeed, createPost, deletePost, reactToPost, addPostComment, getStories, createStory, getSocialProfile, followUser, unfollowUser]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

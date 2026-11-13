@@ -37,7 +37,7 @@ export default function GuidePage({ category }) {
     return () => { active = false; };
   }, [category, getWorkouts]);
 
-  return <div className="min-h-screen pb-16">
+  return <div className="min-h-screen pb-28 lg:pb-16">
     <Navbar />
     <main className="page-shell">
       <Link to="/dashboard" className="mt-8 inline-flex items-center gap-2 text-xs text-muted motion-safe-hover hover:text-ink">

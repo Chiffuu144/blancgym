@@ -80,13 +80,14 @@ export async function me(req, res) { res.json({ user: publicUser(req.user) }); }
 
 export async function updateProfile(req, res, next) {
   try {
-    const allowed = ['username', 'gender', 'age', 'weightKg', 'heightCm', 'experience', 'workoutFrequency', 'goal', 'profileImage'];
+    const allowed = ['username', 'gender', 'age', 'weightKg', 'heightCm', 'experience', 'workoutFrequency', 'goal', 'profileImage', 'featuredPhotos'];
     const updates = Object.fromEntries(allowed.filter(key => req.body[key] !== undefined).map(key => [key, req.body[key]]));
     if (updates.username !== undefined) {
       updates.username = String(updates.username).trim().toLowerCase();
       if (!/^[a-z0-9_]{3,32}$/.test(updates.username)) return res.status(400).json({ message: 'Username must be 3-32 characters using letters, numbers, or underscores.' });
     }
     if (updates.profileImage !== undefined && updates.profileImage && (!/^data:image\/(jpeg|png|webp);base64,/.test(updates.profileImage) || updates.profileImage.length > 2_000_000)) return res.status(400).json({ message: 'Profile photo must be a JPG, PNG, or WebP under 1.5 MB.' });
+    if (updates.featuredPhotos !== undefined && (!Array.isArray(updates.featuredPhotos) || updates.featuredPhotos.length > 4 || updates.featuredPhotos.some(photo => typeof photo !== 'string' || !/^data:image\/(jpeg|png|webp);base64,/.test(photo) || photo.length > 1_500_000))) return res.status(400).json({ message: 'Choose up to 4 JPG, PNG, or WebP featured photos.' });
     const numeric = ['age', 'weightKg', 'heightCm'];
     for (const key of numeric) if (updates[key] !== undefined) updates[key] = Number(updates[key]);
     if (updates.age !== undefined && (!Number.isInteger(updates.age) || updates.age < 18 || updates.age > 100)) return res.status(400).json({ message: 'Age must be between 18 and 100.' });

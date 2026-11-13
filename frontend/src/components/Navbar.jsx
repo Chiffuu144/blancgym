@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { Apple, ArrowUpRight, Dumbbell, LogOut, Menu, Newspaper, UserRound, Users, X } from 'lucide-react';
+import { Apple, ArrowUpRight, Dumbbell, Home as HomeIcon, LogOut, Menu, MessageCircle, Newspaper, Play, Search, UserRound, Users, X } from 'lucide-react';
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const links = [
@@ -15,10 +15,18 @@ const links = [
 ];
 
 const spring = { type: 'spring', stiffness: 400, damping: 30 };
+const mobileLinks = [
+  { key: 'home', to: '/community', label: 'Home', icon: HomeIcon },
+  { key: 'videos', to: '/training', label: 'Videos', icon: Play },
+  { key: 'messages', to: '/friends?tab=messages', label: 'Messages', icon: MessageCircle },
+  { key: 'search', to: '/friends?tab=search', label: 'Search', icon: Search },
+  { key: 'profile', to: '/profile', label: 'Profile', icon: UserRound }
+];
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
 
   function signOut() {
@@ -26,7 +34,7 @@ export default function Navbar() {
     navigate('/login');
   }
 
-  return <header className="nav-shell sticky top-3 z-40">
+  return <><header className="nav-shell sticky top-3 z-40">
     <nav className="glass flex min-h-[64px] items-center justify-between rounded-2xl px-4 sm:px-6" aria-label="Main navigation">
       <NavLink to="/community" className="flex items-center gap-2 font-display text-xl font-semibold tracking-[-.04em]" onClick={() => setOpen(false)}>
         <span className="grid h-9 w-9 place-items-center rounded-xl bg-blush text-roseDark"><Dumbbell size={16} /></span>
@@ -71,5 +79,20 @@ export default function Navbar() {
         <LogOut size={15} /> Sign out
       </button>
     </motion.div>}
-  </header>;
+  </header>
+  <nav aria-label="Mobile navigation" className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-6px_24px_rgba(76,43,49,.08)] backdrop-blur-xl lg:hidden">
+    <div className="mx-auto grid h-[62px] max-w-lg grid-cols-5 items-center px-2">
+      {mobileLinks.map(item => {
+        const active = item.key === 'messages' || item.key === 'search'
+          ? location.pathname === '/friends' && new URLSearchParams(location.search).get('tab') === item.key
+          : item.key === 'profile'
+            ? location.pathname === '/profile' || location.pathname.startsWith('/u/')
+            : location.pathname === item.to || (item.key === 'videos' && ['/gym', '/home'].includes(location.pathname));
+        return <NavLink key={item.key} to={item.to} aria-current={active ? 'page' : undefined} className={`flex h-full flex-col items-center justify-center gap-1 px-1 text-[10px] font-medium ${active ? 'text-roseDark' : 'text-muted'}`}>
+          <span className={`grid h-8 w-12 place-items-center rounded-full transition-colors ${active ? 'bg-blush' : ''}`}><item.icon size={19} strokeWidth={active ? 2.3 : 1.8} /></span>
+          <span>{item.label}</span>
+        </NavLink>;
+      })}
+    </div>
+  </nav></>;
 }

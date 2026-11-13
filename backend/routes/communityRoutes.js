@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { protect } from '../middleware/auth.js';
-import { addFriend, addPostComment, createPost, createStory, deletePost, getFeed, getFriends, getMessages, getStories, reactToPost, removeFriend, searchUsers, sendMessage } from '../controllers/communityController.js';
+import { addFriend, addPostComment, createPost, createStory, deletePost, followUser, getFeed, getFriends, getMessages, getSocialProfile, getStories, reactToPost, removeFriend, searchUsers, sendMessage, unfollowUser } from '../controllers/communityController.js';
 
 const router = Router();
 router.use(protect);
@@ -17,4 +17,7 @@ router.put('/feed/posts/:postId/reaction', reactToPost);
 router.post('/feed/posts/:postId/comments', addPostComment);
 router.get('/stories', getStories);
 router.post('/stories', createStory);
+router.get('/profile/:username', getSocialProfile);
+router.put('/profile/:username/follow', followUser);
+router.delete('/profile/:username/follow', unfollowUser);
 export default router;

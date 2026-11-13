@@ -92,7 +92,7 @@ export default function Onboarding() {
         age: Number(form.age),
         weightKg: Number(form.weightKg)
       });
-      navigate('/dashboard', { replace: true });
+      navigate('/community', { replace: true });
     } catch (err) {
       setError(err.message);
     } finally {

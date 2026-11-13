@@ -20,7 +20,7 @@ export default function Login() {
     setBusy(true);
     try {
       await login(form);
-      navigate(location.state?.from?.pathname || '/dashboard', { replace: true });
+      navigate(location.state?.from?.pathname || '/community', { replace: true });
     } catch (requestError) {
       setError(requestError.message);
     } finally {

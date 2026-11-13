@@ -37,7 +37,14 @@ export function AuthProvider({ children }) {
   const removeFriend = useCallback((id) => request(`/community/friends/${encodeURIComponent(id)}`, { method: 'DELETE' }, token), [token]);
   const getMessages = useCallback(async (id) => (await request(`/community/messages/${encodeURIComponent(id)}`, {}, token)).messages, [token]);
   const sendMessage = useCallback(async (id, text) => (await request(`/community/messages/${encodeURIComponent(id)}`, { method: 'POST', body: JSON.stringify({ text }) }, token)).message, [token]);
-  const value = useMemo(() => ({ user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage }), [user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage]);
+  const getFeed = useCallback(async () => (await request('/community/feed', {}, token)).posts, [token]);
+  const createPost = useCallback(async (post) => (await request('/community/feed/posts', { method: 'POST', body: JSON.stringify(post) }, token)).post, [token]);
+  const deletePost = useCallback((id) => request(`/community/feed/posts/${encodeURIComponent(id)}`, { method: 'DELETE' }, token), [token]);
+  const reactToPost = useCallback(async (id, reaction) => (await request(`/community/feed/posts/${encodeURIComponent(id)}/reaction`, { method: 'PUT', body: JSON.stringify({ reaction }) }, token)).post, [token]);
+  const addPostComment = useCallback(async (id, text) => (await request(`/community/feed/posts/${encodeURIComponent(id)}/comments`, { method: 'POST', body: JSON.stringify({ text }) }, token)).post, [token]);
+  const getStories = useCallback(async () => (await request('/community/stories', {}, token)).stories, [token]);
+  const createStory = useCallback(async (story) => (await request('/community/stories', { method: 'POST', body: JSON.stringify(story) }, token)).story, [token]);
+  const value = useMemo(() => ({ user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage, getFeed, createPost, deletePost, reactToPost, addPostComment, getStories, createStory }), [user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage, getFeed, createPost, deletePost, reactToPost, addPostComment, getStories, createStory]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

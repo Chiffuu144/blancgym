@@ -63,6 +63,17 @@ a { color: inherit; text-decoration: none; }
 .calorie-warning-dialog::backdrop { background: rgba(42, 32, 35, .46); transition: background-color 240ms cubic-bezier(.23, 1, .32, 1); }
 .calorie-warning-card { border: 1px solid #ead9cb; background: #fdfbf7; box-shadow: 0 24px 72px rgba(42, 32, 35, .2); }
 @media (prefers-reduced-motion: reduce) { .calorie-warning-dialog::backdrop { transition: none; } }
+
+@keyframes featured-progress-10s {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.animate-featured-progress { animation: featured-progress-10s 10s linear forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-featured-progress { animation: none; transform: scaleX(0); }
+}
 @keyframes demo-breathe { from { transform: translateY(4px) scale(.96); } to { transform: translateY(-3px) scale(1.02); } }
 
 @media (max-width: 640px) {

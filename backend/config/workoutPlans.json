@@ -1,0 +1,1928 @@
+[
+  {
+    "category": "At the Gym",
+    "levels": [
+      {
+        "level": "Beginner",
+        "schedule": [
+          {
+            "day": "Monday",
+            "targetArea": "Push (Chest, Shoulders, Triceps)",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Machine Chest Press",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Machine+Chest+Press+properly"
+              },
+              {
+                "name": "Overhead Dumbbell Press",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Overhead+Dumbbell+Press+properly"
+              },
+              {
+                "name": "Tricep Pushdowns",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Tricep+Pushdowns+properly"
+              },
+              {
+                "name": "Dumbbell Lateral Raises",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Dumbbell+Lateral+Raises+properly"
+              },
+              {
+                "name": "Pec Deck Machine",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Pec+Deck+Machine+properly"
+              }
+            ]
+          },
+          {
+            "day": "Tuesday",
+            "targetArea": "Pull (Back, Biceps)",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Lat Pulldowns",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lat+Pulldowns+properly"
+              },
+              {
+                "name": "Seated Cable Rows",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Cable+Rows+properly"
+              },
+              {
+                "name": "Dumbbell Bicep Curls",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Dumbbell+Bicep+Curls+properly"
+              },
+              {
+                "name": "Face Pulls",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Face+Pulls+properly"
+              },
+              {
+                "name": "Hammer Curls",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Hammer+Curls+properly"
+              }
+            ]
+          },
+          {
+            "day": "Wednesday",
+            "targetArea": "Legs & Core",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Leg Press",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Leg+Press+properly"
+              },
+              {
+                "name": "Leg Extensions",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Leg+Extensions+properly"
+              },
+              {
+                "name": "Lying Hamstring Curls",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Hamstring+Curls+properly"
+              },
+              {
+                "name": "Machine Crunches",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Machine+Crunches+properly"
+              },
+              {
+                "name": "Standing Calf Raises",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Calf+Raises+properly"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          },
+          {
+            "day": "Friday",
+            "targetArea": "Upper Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Incline Machine Press",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Incline+Machine+Press+properly"
+              },
+              {
+                "name": "Cable Lateral Raises",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cable+Lateral+Raises+properly"
+              },
+              {
+                "name": "Cable Crossover",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cable+Crossover+properly"
+              },
+              {
+                "name": "Cable Bicep Curls",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cable+Bicep+Curls+properly"
+              },
+              {
+                "name": "Overhead Tricep Extension",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Overhead+Tricep+Extension+properly"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "targetArea": "Lower Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Goblet Squats",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Goblet+Squats+properly"
+              },
+              {
+                "name": "Seated Leg Curl",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Leg+Curl+properly"
+              },
+              {
+                "name": "Dumbbell Lunges",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Dumbbell+Lunges+properly"
+              },
+              {
+                "name": "Seated Calf Raises",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Calf+Raises+properly"
+              },
+              {
+                "name": "Plank",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Plank+properly"
+              }
+            ]
+          },
+          {
+            "day": "Sunday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          }
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "schedule": [
+          {
+            "day": "Monday",
+            "targetArea": "Push (Chest, Shoulders, Triceps)",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Barbell Bench Press",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Barbell+Bench+Press+properly"
+              },
+              {
+                "name": "Incline Dumbbell Press",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Incline+Dumbbell+Press+properly"
+              },
+              {
+                "name": "Overhead Shoulder Press",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Overhead+Shoulder+Press+properly"
+              },
+              {
+                "name": "Cable Lateral Raises",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cable+Lateral+Raises+properly"
+              },
+              {
+                "name": "Tricep Pushdowns",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Tricep+Pushdowns+properly"
+              }
+            ]
+          },
+          {
+            "day": "Tuesday",
+            "targetArea": "Pull (Back, Biceps)",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Lat Pulldowns",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lat+Pulldowns+properly"
+              },
+              {
+                "name": "Barbell Row",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Barbell+Row+properly"
+              },
+              {
+                "name": "Seated Cable Row",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Cable+Row+properly"
+              },
+              {
+                "name": "Face Pulls",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Face+Pulls+properly"
+              },
+              {
+                "name": "Barbell Bicep Curls",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Barbell+Bicep+Curls+properly"
+              }
+            ]
+          },
+          {
+            "day": "Wednesday",
+            "targetArea": "Legs & Core",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Barbell Squats",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Barbell+Squats+properly"
+              },
+              {
+                "name": "Leg Press",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Leg+Press+properly"
+              },
+              {
+                "name": "Leg Extensions",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Leg+Extensions+properly"
+              },
+              {
+                "name": "Lying Hamstring Curls",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Hamstring+Curls+properly"
+              },
+              {
+                "name": "Standing Calf Raises",
+                "sets": "4",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Calf+Raises+properly"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          },
+          {
+            "day": "Friday",
+            "targetArea": "Upper Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Dumbbell Chest Press",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Dumbbell+Chest+Press+properly"
+              },
+              {
+                "name": "Wide Grip Cable Row",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Wide+Grip+Cable+Row+properly"
+              },
+              {
+                "name": "Dumbbell Shoulder Press",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Dumbbell+Shoulder+Press+properly"
+              },
+              {
+                "name": "Preacher Curls",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Preacher+Curls+properly"
+              },
+              {
+                "name": "Machine Tricep Dips",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Machine+Tricep+Dips+properly"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "targetArea": "Lower Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Romanian Deadlifts",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Romanian+Deadlifts+properly"
+              },
+              {
+                "name": "Dumbbell Lunges",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Dumbbell+Lunges+properly"
+              },
+              {
+                "name": "Machine Hip Thrusts",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Machine+Hip+Thrusts+properly"
+              },
+              {
+                "name": "Seated Calf Raises",
+                "sets": "4",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Calf+Raises+properly"
+              },
+              {
+                "name": "Hanging Leg Raises",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Hanging+Leg+Raises+properly"
+              }
+            ]
+          },
+          {
+            "day": "Sunday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          }
+        ]
+      },
+      {
+        "level": "Advanced",
+        "schedule": [
+          {
+            "day": "Monday",
+            "targetArea": "Push (Chest, Shoulders, Triceps)",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Barbell Bench Press",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Barbell+Bench+Press+properly"
+              },
+              {
+                "name": "Incline Dumbbell Press",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Incline+Dumbbell+Press+properly"
+              },
+              {
+                "name": "Overhead Shoulder Press",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Overhead+Shoulder+Press+properly"
+              },
+              {
+                "name": "Cable Lateral Raises",
+                "sets": "5",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cable+Lateral+Raises+properly"
+              },
+              {
+                "name": "Overhead Tricep Extension",
+                "sets": "5",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Overhead+Tricep+Extension+properly"
+              }
+            ]
+          },
+          {
+            "day": "Tuesday",
+            "targetArea": "Pull (Back, Biceps)",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Lat Pulldowns",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lat+Pulldowns+properly"
+              },
+              {
+                "name": "Barbell Row",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Barbell+Row+properly"
+              },
+              {
+                "name": "Seated Cable Row",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Cable+Row+properly"
+              },
+              {
+                "name": "Face Pulls",
+                "sets": "5",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Face+Pulls+properly"
+              },
+              {
+                "name": "Hammer Curls",
+                "sets": "5",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Hammer+Curls+properly"
+              }
+            ]
+          },
+          {
+            "day": "Wednesday",
+            "targetArea": "Legs & Core",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Barbell Squats",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Barbell+Squats+properly"
+              },
+              {
+                "name": "Leg Press",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Leg+Press+properly"
+              },
+              {
+                "name": "Leg Extensions",
+                "sets": "5",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Leg+Extensions+properly"
+              },
+              {
+                "name": "Lying Hamstring Curls",
+                "sets": "5",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Hamstring+Curls+properly"
+              },
+              {
+                "name": "Cable Crunches",
+                "sets": "5",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cable+Crunches+properly"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          },
+          {
+            "day": "Friday",
+            "targetArea": "Upper Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Dumbbell Chest Press",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Dumbbell+Chest+Press+properly"
+              },
+              {
+                "name": "Pec Deck Machine Fly",
+                "sets": "5",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Pec+Deck+Machine+Fly+properly"
+              },
+              {
+                "name": "Wide Grip Cable Row",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Wide+Grip+Cable+Row+properly"
+              },
+              {
+                "name": "Dumbbell Shoulder Press",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Dumbbell+Shoulder+Press+properly"
+              },
+              {
+                "name": "Preacher Curls",
+                "sets": "5",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Preacher+Curls+properly"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "targetArea": "Lower Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Romanian Deadlifts",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Romanian+Deadlifts+properly"
+              },
+              {
+                "name": "Dumbbell Lunges",
+                "sets": "5",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Dumbbell+Lunges+properly"
+              },
+              {
+                "name": "Machine Hip Thrusts",
+                "sets": "5",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Machine+Hip+Thrusts+properly"
+              },
+              {
+                "name": "Seated Calf Raises",
+                "sets": "5",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Calf+Raises+properly"
+              },
+              {
+                "name": "Weighted Planks",
+                "sets": "5",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Weighted+Planks+properly"
+              }
+            ]
+          },
+          {
+            "day": "Sunday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "At Home",
+    "levels": [
+      {
+        "level": "Beginner",
+        "schedule": [
+          {
+            "day": "Monday",
+            "targetArea": "Upper Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Knee Push-ups",
+                "sets": "3",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Knee+Push-ups+properly"
+              },
+              {
+                "name": "Wide Knee Push-ups",
+                "sets": "3",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Wide+Knee+Push-ups+properly"
+              },
+              {
+                "name": "Arm Circles",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Arm+Circles+properly"
+              },
+              {
+                "name": "Chair Dips",
+                "sets": "3",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Chair+Dips+properly"
+              },
+              {
+                "name": "Superman Hold",
+                "sets": "3",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Superman+Hold+properly"
+              }
+            ]
+          },
+          {
+            "day": "Tuesday",
+            "targetArea": "Lower Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Bodyweight Squats",
+                "sets": "3",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Bodyweight+Squats+properly"
+              },
+              {
+                "name": "Forward Lunges",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Forward+Lunges+properly"
+              },
+              {
+                "name": "Reverse Lunges",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Reverse+Lunges+properly"
+              },
+              {
+                "name": "Glute Bridges",
+                "sets": "3",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Glute+Bridges+properly"
+              },
+              {
+                "name": "Wall Sit",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Wall+Sit+properly"
+              }
+            ]
+          },
+          {
+            "day": "Wednesday",
+            "targetArea": "Core",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Standard Crunches",
+                "sets": "3",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standard+Crunches+properly"
+              },
+              {
+                "name": "Plank",
+                "sets": "3",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Plank+properly"
+              },
+              {
+                "name": "Mountain Climbers",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Mountain+Climbers+properly"
+              },
+              {
+                "name": "Lying Leg Raises",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Leg+Raises+properly"
+              },
+              {
+                "name": "Bicycle Crunches",
+                "sets": "3",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Bicycle+Crunches+properly"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          },
+          {
+            "day": "Friday",
+            "targetArea": "Full Body HIIT",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Jumping Jacks",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Jumping+Jacks+properly"
+              },
+              {
+                "name": "High Knees",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+High+Knees+properly"
+              },
+              {
+                "name": "Burpees without push-up",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Burpees+without+push-up+properly"
+              },
+              {
+                "name": "Squat Jumps",
+                "sets": "3",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Squat+Jumps+properly"
+              },
+              {
+                "name": "Inchworms",
+                "sets": "3",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Inchworms+properly"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "targetArea": "Mixed Strength",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Knee Diamond Push-ups",
+                "sets": "3",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Knee+Diamond+Push-ups+properly"
+              },
+              {
+                "name": "Bulgarian Split Squats",
+                "sets": "3",
+                "repsOrDuration": "8 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Bulgarian+Split+Squats+properly"
+              },
+              {
+                "name": "Bear Crawls",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Bear+Crawls+properly"
+              },
+              {
+                "name": "Side Planks",
+                "sets": "3",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Side+Planks+properly"
+              },
+              {
+                "name": "Flutter Kicks",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Flutter+Kicks+properly"
+              }
+            ]
+          },
+          {
+            "day": "Sunday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          }
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "schedule": [
+          {
+            "day": "Monday",
+            "targetArea": "Upper Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Standard Push-ups",
+                "sets": "4",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standard+Push-ups+properly"
+              },
+              {
+                "name": "Wide Push-ups",
+                "sets": "4",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Wide+Push-ups+properly"
+              },
+              {
+                "name": "Pike Push-ups",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Pike+Push-ups+properly"
+              },
+              {
+                "name": "Chair Dips",
+                "sets": "4",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Chair+Dips+properly"
+              },
+              {
+                "name": "Plank Shoulder Taps",
+                "sets": "4",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Plank+Shoulder+Taps+properly"
+              }
+            ]
+          },
+          {
+            "day": "Tuesday",
+            "targetArea": "Lower Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Bodyweight Squats",
+                "sets": "4",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Bodyweight+Squats+properly"
+              },
+              {
+                "name": "Forward Lunges",
+                "sets": "4",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Forward+Lunges+properly"
+              },
+              {
+                "name": "Reverse Lunges",
+                "sets": "4",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Reverse+Lunges+properly"
+              },
+              {
+                "name": "Glute Bridges",
+                "sets": "4",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Glute+Bridges+properly"
+              },
+              {
+                "name": "Floor Calf Raises",
+                "sets": "4",
+                "repsOrDuration": "25 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Floor+Calf+Raises+properly"
+              }
+            ]
+          },
+          {
+            "day": "Wednesday",
+            "targetArea": "Core",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Bicycle Crunches",
+                "sets": "4",
+                "repsOrDuration": "25 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Bicycle+Crunches+properly"
+              },
+              {
+                "name": "Lying Leg Raises",
+                "sets": "4",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Leg+Raises+properly"
+              },
+              {
+                "name": "Russian Twists",
+                "sets": "4",
+                "repsOrDuration": "30 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Russian+Twists+properly"
+              },
+              {
+                "name": "Mountain Climbers",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Mountain+Climbers+properly"
+              },
+              {
+                "name": "Elbow Plank",
+                "sets": "4",
+                "repsOrDuration": "40 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Elbow+Plank+properly"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          },
+          {
+            "day": "Friday",
+            "targetArea": "Full Body HIIT",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Jumping Jacks",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Jumping+Jacks+properly"
+              },
+              {
+                "name": "High Knees",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+High+Knees+properly"
+              },
+              {
+                "name": "Burpees",
+                "sets": "4",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Burpees+properly"
+              },
+              {
+                "name": "Skater Jumps",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Skater+Jumps+properly"
+              },
+              {
+                "name": "Squat Jumps",
+                "sets": "4",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Squat+Jumps+properly"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "targetArea": "Mixed Strength",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Diamond Push-ups",
+                "sets": "4",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Diamond+Push-ups+properly"
+              },
+              {
+                "name": "Bulgarian Split Squats",
+                "sets": "4",
+                "repsOrDuration": "12 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Bulgarian+Split+Squats+properly"
+              },
+              {
+                "name": "Side Planks",
+                "sets": "4",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Side+Planks+properly"
+              },
+              {
+                "name": "Flutter Kicks",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Flutter+Kicks+properly"
+              },
+              {
+                "name": "Lying Side Leg Raises",
+                "sets": "4",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Side+Leg+Raises+properly"
+              }
+            ]
+          },
+          {
+            "day": "Sunday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          }
+        ]
+      },
+      {
+        "level": "Advanced",
+        "schedule": [
+          {
+            "day": "Monday",
+            "targetArea": "Upper Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Standard Push-ups",
+                "sets": "5",
+                "repsOrDuration": "to failure",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standard+Push-ups+properly"
+              },
+              {
+                "name": "Wide Push-ups",
+                "sets": "5",
+                "repsOrDuration": "to failure",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Wide+Push-ups+properly"
+              },
+              {
+                "name": "Pike Push-ups",
+                "sets": "5",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Pike+Push-ups+properly"
+              },
+              {
+                "name": "Chair Dips",
+                "sets": "5",
+                "repsOrDuration": "25 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Chair+Dips+properly"
+              },
+              {
+                "name": "Plank Shoulder Taps",
+                "sets": "5",
+                "repsOrDuration": "30 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Plank+Shoulder+Taps+properly"
+              }
+            ]
+          },
+          {
+            "day": "Tuesday",
+            "targetArea": "Lower Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Bodyweight Squats",
+                "sets": "5",
+                "repsOrDuration": "30 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Bodyweight+Squats+properly"
+              },
+              {
+                "name": "Forward Lunges",
+                "sets": "5",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Forward+Lunges+properly"
+              },
+              {
+                "name": "Reverse Lunges",
+                "sets": "5",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Reverse+Lunges+properly"
+              },
+              {
+                "name": "Glute Bridges",
+                "sets": "5",
+                "repsOrDuration": "30 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Glute+Bridges+properly"
+              },
+              {
+                "name": "Wall Sit",
+                "sets": "5",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Wall+Sit+properly"
+              }
+            ]
+          },
+          {
+            "day": "Wednesday",
+            "targetArea": "Core",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Bicycle Crunches",
+                "sets": "5",
+                "repsOrDuration": "40 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Bicycle+Crunches+properly"
+              },
+              {
+                "name": "Lying Leg Raises",
+                "sets": "5",
+                "repsOrDuration": "25 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Leg+Raises+properly"
+              },
+              {
+                "name": "Russian Twists",
+                "sets": "5",
+                "repsOrDuration": "50 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Russian+Twists+properly"
+              },
+              {
+                "name": "Mountain Climbers",
+                "sets": "5",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Mountain+Climbers+properly"
+              },
+              {
+                "name": "Elbow Plank",
+                "sets": "5",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Elbow+Plank+properly"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          },
+          {
+            "day": "Friday",
+            "targetArea": "Full Body HIIT",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Jumping Jacks",
+                "sets": "5",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Jumping+Jacks+properly"
+              },
+              {
+                "name": "High Knees",
+                "sets": "5",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+High+Knees+properly"
+              },
+              {
+                "name": "Burpees with push-up",
+                "sets": "5",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Burpees+with+push-up+properly"
+              },
+              {
+                "name": "Skater Jumps",
+                "sets": "5",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Skater+Jumps+properly"
+              },
+              {
+                "name": "Squat Jumps",
+                "sets": "5",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Squat+Jumps+properly"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "targetArea": "Mixed Strength",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Diamond Push-ups",
+                "sets": "5",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Diamond+Push-ups+properly"
+              },
+              {
+                "name": "Bulgarian Split Squats",
+                "sets": "5",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Bulgarian+Split+Squats+properly"
+              },
+              {
+                "name": "Bear Crawls",
+                "sets": "5",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Bear+Crawls+properly"
+              },
+              {
+                "name": "Side Planks",
+                "sets": "5",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Side+Planks+properly"
+              },
+              {
+                "name": "Lying Side Leg Raises",
+                "sets": "5",
+                "repsOrDuration": "25 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Side+Leg+Raises+properly"
+              }
+            ]
+          },
+          {
+            "day": "Sunday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Stretching",
+    "levels": [
+      {
+        "level": "Beginner",
+        "schedule": [
+          {
+            "day": "Monday",
+            "targetArea": "Upper Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Neck Tilts and Rolls",
+                "sets": "2",
+                "repsOrDuration": "15 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Neck+Tilts+and+Rolls+properly"
+              },
+              {
+                "name": "Cross-arm Shoulder Stretch",
+                "sets": "2",
+                "repsOrDuration": "15 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cross-arm+Shoulder+Stretch+properly"
+              },
+              {
+                "name": "Overhead Tricep Stretch",
+                "sets": "2",
+                "repsOrDuration": "15 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Overhead+Tricep+Stretch+properly"
+              },
+              {
+                "name": "Chest Opener",
+                "sets": "2",
+                "repsOrDuration": "15 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Chest+Opener+properly"
+              },
+              {
+                "name": "Child's Pose",
+                "sets": "2",
+                "repsOrDuration": "15 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Child%27s+Pose+properly"
+              }
+            ]
+          },
+          {
+            "day": "Tuesday",
+            "targetArea": "Lower Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Standing Quad Stretch",
+                "sets": "2",
+                "repsOrDuration": "15 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Quad+Stretch+properly"
+              },
+              {
+                "name": "Seated Hamstring Reach",
+                "sets": "2",
+                "repsOrDuration": "15 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Hamstring+Reach+properly"
+              },
+              {
+                "name": "Wall Calf Stretch",
+                "sets": "2",
+                "repsOrDuration": "15 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Wall+Calf+Stretch+properly"
+              },
+              {
+                "name": "Butterfly Stretch",
+                "sets": "2",
+                "repsOrDuration": "15 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Butterfly+Stretch+properly"
+              },
+              {
+                "name": "Lunge Hip Flexor Stretch",
+                "sets": "2",
+                "repsOrDuration": "15 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lunge+Hip+Flexor+Stretch+properly"
+              }
+            ]
+          },
+          {
+            "day": "Wednesday",
+            "targetArea": "Back/Spine",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Cat-Cow Stretch",
+                "sets": "2",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cat-Cow+Stretch+properly"
+              },
+              {
+                "name": "Cobra Pose",
+                "sets": "2",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cobra+Pose+properly"
+              },
+              {
+                "name": "Knees-to-Chest Stretch",
+                "sets": "2",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Knees-to-Chest+Stretch+properly"
+              },
+              {
+                "name": "Lying Spinal Twist",
+                "sets": "2",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Spinal+Twist+properly"
+              },
+              {
+                "name": "Downward Dog",
+                "sets": "2",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Downward+Dog+properly"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "targetArea": "Hips/Glutes",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Pigeon Pose",
+                "sets": "2",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Pigeon+Pose+properly"
+              },
+              {
+                "name": "Deep Squat Hold",
+                "sets": "2",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Deep+Squat+Hold+properly"
+              },
+              {
+                "name": "Lying Glute Stretch",
+                "sets": "2",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Glute+Stretch+properly"
+              },
+              {
+                "name": "Happy Baby Pose",
+                "sets": "2",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Happy+Baby+Pose+properly"
+              },
+              {
+                "name": "Seated Straddle Stretch",
+                "sets": "2",
+                "repsOrDuration": "20 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Straddle+Stretch+properly"
+              }
+            ]
+          },
+          {
+            "day": "Friday",
+            "targetArea": "Full Body Flow",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Standing Reach for the Sky",
+                "sets": "2",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Reach+for+the+Sky+properly"
+              },
+              {
+                "name": "Standing Forward Fold",
+                "sets": "2",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Forward+Fold+properly"
+              },
+              {
+                "name": "Lunging Hip Flexor",
+                "sets": "2",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lunging+Hip+Flexor+properly"
+              },
+              {
+                "name": "Downward Dog to Cobra",
+                "sets": "2",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Downward+Dog+to+Cobra+properly"
+              },
+              {
+                "name": "Standing Side Bend",
+                "sets": "2",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Side+Bend+properly"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "targetArea": "Dynamic Mobility",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Big Arm Circles",
+                "sets": "1",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Big+Arm+Circles+properly"
+              },
+              {
+                "name": "Standing Torso Twists",
+                "sets": "1",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Torso+Twists+properly"
+              },
+              {
+                "name": "Forward Leg Swings",
+                "sets": "1",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Forward+Leg+Swings+properly"
+              },
+              {
+                "name": "Side Leg Swings",
+                "sets": "1",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Side+Leg+Swings+properly"
+              },
+              {
+                "name": "Hip Circles",
+                "sets": "1",
+                "repsOrDuration": "10 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Hip+Circles+properly"
+              }
+            ]
+          },
+          {
+            "day": "Sunday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          }
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "schedule": [
+          {
+            "day": "Monday",
+            "targetArea": "Upper Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Neck Tilts and Rolls",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Neck+Tilts+and+Rolls+properly"
+              },
+              {
+                "name": "Cross-arm Shoulder Stretch",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cross-arm+Shoulder+Stretch+properly"
+              },
+              {
+                "name": "Overhead Tricep Stretch",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Overhead+Tricep+Stretch+properly"
+              },
+              {
+                "name": "Chest Opener",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Chest+Opener+properly"
+              },
+              {
+                "name": "Child's Pose",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Child%27s+Pose+properly"
+              }
+            ]
+          },
+          {
+            "day": "Tuesday",
+            "targetArea": "Lower Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Standing Quad Stretch",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Quad+Stretch+properly"
+              },
+              {
+                "name": "Seated Hamstring Reach",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Hamstring+Reach+properly"
+              },
+              {
+                "name": "Wall Calf Stretch",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Wall+Calf+Stretch+properly"
+              },
+              {
+                "name": "Butterfly Stretch",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Butterfly+Stretch+properly"
+              },
+              {
+                "name": "Lunge Hip Flexor Stretch",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lunge+Hip+Flexor+Stretch+properly"
+              }
+            ]
+          },
+          {
+            "day": "Wednesday",
+            "targetArea": "Back/Spine",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Cat-Cow Stretch",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cat-Cow+Stretch+properly"
+              },
+              {
+                "name": "Cobra Pose",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cobra+Pose+properly"
+              },
+              {
+                "name": "Knees-to-Chest Stretch",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Knees-to-Chest+Stretch+properly"
+              },
+              {
+                "name": "Lying Spinal Twist",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Spinal+Twist+properly"
+              },
+              {
+                "name": "Downward Dog",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Downward+Dog+properly"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "targetArea": "Hips/Glutes",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Pigeon Pose",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Pigeon+Pose+properly"
+              },
+              {
+                "name": "Deep Squat Hold",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Deep+Squat+Hold+properly"
+              },
+              {
+                "name": "Lying Glute Stretch",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Glute+Stretch+properly"
+              },
+              {
+                "name": "Happy Baby Pose",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Happy+Baby+Pose+properly"
+              },
+              {
+                "name": "Seated Straddle Stretch",
+                "sets": "3",
+                "repsOrDuration": "30 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Straddle+Stretch+properly"
+              }
+            ]
+          },
+          {
+            "day": "Friday",
+            "targetArea": "Full Body Flow",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Standing Reach for the Sky",
+                "sets": "3",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Reach+for+the+Sky+properly"
+              },
+              {
+                "name": "Standing Forward Fold",
+                "sets": "3",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Forward+Fold+properly"
+              },
+              {
+                "name": "Lunging Hip Flexor",
+                "sets": "3",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lunging+Hip+Flexor+properly"
+              },
+              {
+                "name": "Downward Dog to Cobra",
+                "sets": "3",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Downward+Dog+to+Cobra+properly"
+              },
+              {
+                "name": "Standing Side Bend",
+                "sets": "3",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Side+Bend+properly"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "targetArea": "Dynamic Mobility",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Big Arm Circles",
+                "sets": "1",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Big+Arm+Circles+properly"
+              },
+              {
+                "name": "Standing Torso Twists",
+                "sets": "1",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Torso+Twists+properly"
+              },
+              {
+                "name": "Forward Leg Swings",
+                "sets": "1",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Forward+Leg+Swings+properly"
+              },
+              {
+                "name": "Side Leg Swings",
+                "sets": "1",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Side+Leg+Swings+properly"
+              },
+              {
+                "name": "Hip Circles",
+                "sets": "1",
+                "repsOrDuration": "15 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Hip+Circles+properly"
+              }
+            ]
+          },
+          {
+            "day": "Sunday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          }
+        ]
+      },
+      {
+        "level": "Advanced",
+        "schedule": [
+          {
+            "day": "Monday",
+            "targetArea": "Upper Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Neck Tilts and Rolls",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Neck+Tilts+and+Rolls+properly"
+              },
+              {
+                "name": "Cross-arm Shoulder Stretch",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cross-arm+Shoulder+Stretch+properly"
+              },
+              {
+                "name": "Overhead Tricep Stretch",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Overhead+Tricep+Stretch+properly"
+              },
+              {
+                "name": "Chest Opener",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Chest+Opener+properly"
+              },
+              {
+                "name": "Child's Pose",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Child%27s+Pose+properly"
+              }
+            ]
+          },
+          {
+            "day": "Tuesday",
+            "targetArea": "Lower Body",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Standing Quad Stretch",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Quad+Stretch+properly"
+              },
+              {
+                "name": "Seated Hamstring Reach",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Hamstring+Reach+properly"
+              },
+              {
+                "name": "Wall Calf Stretch",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Wall+Calf+Stretch+properly"
+              },
+              {
+                "name": "Butterfly Stretch",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Butterfly+Stretch+properly"
+              },
+              {
+                "name": "Lunge Hip Flexor Stretch",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lunge+Hip+Flexor+Stretch+properly"
+              }
+            ]
+          },
+          {
+            "day": "Wednesday",
+            "targetArea": "Back/Spine",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Cat-Cow Stretch",
+                "sets": "4",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cat-Cow+Stretch+properly"
+              },
+              {
+                "name": "Cobra Pose",
+                "sets": "4",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Cobra+Pose+properly"
+              },
+              {
+                "name": "Knees-to-Chest Stretch",
+                "sets": "4",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Knees-to-Chest+Stretch+properly"
+              },
+              {
+                "name": "Lying Spinal Twist",
+                "sets": "4",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Spinal+Twist+properly"
+              },
+              {
+                "name": "Downward Dog",
+                "sets": "4",
+                "repsOrDuration": "60 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Downward+Dog+properly"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "targetArea": "Hips/Glutes",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Pigeon Pose",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Pigeon+Pose+properly"
+              },
+              {
+                "name": "Deep Squat Hold",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Deep+Squat+Hold+properly"
+              },
+              {
+                "name": "Lying Glute Stretch",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lying+Glute+Stretch+properly"
+              },
+              {
+                "name": "Happy Baby Pose",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Happy+Baby+Pose+properly"
+              },
+              {
+                "name": "Seated Straddle Stretch",
+                "sets": "4",
+                "repsOrDuration": "45 sec",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Seated+Straddle+Stretch+properly"
+              }
+            ]
+          },
+          {
+            "day": "Friday",
+            "targetArea": "Full Body Flow",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Standing Reach for the Sky",
+                "sets": "5",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Reach+for+the+Sky+properly"
+              },
+              {
+                "name": "Standing Forward Fold",
+                "sets": "5",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Forward+Fold+properly"
+              },
+              {
+                "name": "Lunging Hip Flexor",
+                "sets": "5",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Lunging+Hip+Flexor+properly"
+              },
+              {
+                "name": "Downward Dog to Cobra",
+                "sets": "5",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Downward+Dog+to+Cobra+properly"
+              },
+              {
+                "name": "Standing Side Bend",
+                "sets": "5",
+                "repsOrDuration": "rounds",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Side+Bend+properly"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "targetArea": "Dynamic Mobility",
+            "isRestDay": false,
+            "exercises": [
+              {
+                "name": "Big Arm Circles",
+                "sets": "1",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Big+Arm+Circles+properly"
+              },
+              {
+                "name": "Standing Torso Twists",
+                "sets": "1",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Standing+Torso+Twists+properly"
+              },
+              {
+                "name": "Forward Leg Swings",
+                "sets": "1",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Forward+Leg+Swings+properly"
+              },
+              {
+                "name": "Side Leg Swings",
+                "sets": "1",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Side+Leg+Swings+properly"
+              },
+              {
+                "name": "Hip Circles",
+                "sets": "1",
+                "repsOrDuration": "20 reps",
+                "youtubeLink": "https://www.youtube.com/results?search_query=how+to+do+Hip+Circles+properly"
+              }
+            ]
+          },
+          {
+            "day": "Sunday",
+            "targetArea": "Rest Day",
+            "isRestDay": true,
+            "exercises": []
+          }
+        ]
+      }
+    ]
+  }
+]

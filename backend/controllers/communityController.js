@@ -103,14 +103,28 @@ export async function getFeed(req, res, next) {
   } catch (error) { next(error); }
 }
 
+export async function getReels(req, res, next) {
+  try {
+    const posts = await CommunityPost.find({ author: { $in: postAuthors(req.user) }, video: { $exists: true, $type: 'string', $ne: '' } })
+      .sort({ createdAt: -1 }).limit(30)
+      .populate('author', 'username name profileImage')
+      .populate('reactions.user', 'username name profileImage')
+      .populate('comments.author', 'username name profileImage').lean();
+    res.json({ posts });
+  } catch (error) { next(error); }
+}
+
 export async function createPost(req, res, next) {
   try {
     const text = typeof req.body.text === 'string' ? req.body.text.trim() : '';
     const images = req.body.images ?? [];
+    const video = req.body.video || '';
     if (text.length > 1000) return res.status(400).json({ message: 'Post text must be 1,000 characters or fewer.' });
     if (!Array.isArray(images) || images.length > 4 || images.some(image => !imageDataUrl(image))) return res.status(400).json({ message: 'Add up to 4 JPG, PNG, or WebP photos.' });
-    if (!text && !images.length) return res.status(400).json({ message: 'Write something or add a photo to post.' });
-    const post = await CommunityPost.create({ author: req.user._id, text, images });
+    if (video && (typeof video !== 'string' || !/^data:video\/(mp4|webm|quicktime);base64,/.test(video) || video.length > 7_100_000)) return res.status(400).json({ message: 'Add one MP4, WebM, or MOV video under 5 MB.' });
+    if (video && images.length) return res.status(400).json({ message: 'Share either a video or photos in one post.' });
+    if (!text && !images.length && !video) return res.status(400).json({ message: 'Write something or add a photo or video.' });
+    const post = await CommunityPost.create({ author: req.user._id, text, images, video });
     await post.populate('author', 'username name profileImage');
     res.status(201).json({ post });
   } catch (error) { next(error); }
@@ -186,7 +200,7 @@ export async function getSocialProfile(req, res, next) {
       .select('name username profileImage featuredPhotos followers following friends goal createdAt').lean();
     if (!profile) return res.status(404).json({ message: 'Profile not found.' });
     const [posts, totalPosts] = await Promise.all([
-      CommunityPost.find({ author: profile._id }).select('author text images createdAt').slice('images', 1).sort({ createdAt: -1 }).limit(24).populate('author', 'username name profileImage').lean(),
+      CommunityPost.find({ author: profile._id }).select('author text images video createdAt').slice('images', 1).sort({ createdAt: -1 }).limit(24).populate('author', 'username name profileImage').lean(),
       CommunityPost.countDocuments({ author: profile._id })
     ]);
     res.json({

@@ -17,7 +17,7 @@ const links = [
 const spring = { type: 'spring', stiffness: 400, damping: 30 };
 const mobileLinks = [
   { key: 'home', to: '/community', label: 'Home', icon: HomeIcon },
-  { key: 'videos', to: '/training', label: 'Videos', icon: Play },
+  { key: 'videos', to: '/reels', label: 'Reels', icon: Play },
   { key: 'messages', to: '/friends?tab=messages', label: 'Messages', icon: MessageCircle },
   { key: 'search', to: '/friends?tab=search', label: 'Search', icon: Search },
   { key: 'profile', to: '/profile', label: 'Profile', icon: UserRound }
@@ -87,7 +87,7 @@ export default function Navbar() {
           ? location.pathname === '/friends' && new URLSearchParams(location.search).get('tab') === item.key
           : item.key === 'profile'
             ? location.pathname === '/profile' || location.pathname.startsWith('/u/')
-            : location.pathname === item.to || (item.key === 'videos' && ['/gym', '/home'].includes(location.pathname));
+            : location.pathname === item.to;
         return <NavLink key={item.key} to={item.to} aria-current={active ? 'page' : undefined} className={`flex h-full flex-col items-center justify-center gap-1 px-1 text-[10px] font-medium ${active ? 'text-roseDark' : 'text-muted'}`}>
           <span className={`grid h-8 w-12 place-items-center rounded-full transition-colors ${active ? 'bg-blush' : ''}`}><item.icon size={19} strokeWidth={active ? 2.3 : 1.8} /></span>
           <span>{item.label}</span>

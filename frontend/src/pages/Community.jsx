@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, Camera, Heart, ImagePlus, MessageCircle, MoreHorizontal, Newspaper, Plus, Send, Trash2, UserRound, X } from 'lucide-react';
+import { AlertCircle, ArrowLeft, Camera, Heart, ImagePlus, MessageCircle, Newspaper, Plus, Send, Trash2, UserRound, Video, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import GlassCard from '../components/GlassCard.jsx';
 import LoadingScreen from '../components/LoadingScreen.jsx';
@@ -8,11 +8,11 @@ import Navbar from '../components/Navbar.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const reactionOptions = [
-  { id: 'like', emoji: '👍', label: 'Like' },
-  { id: 'heart', emoji: '❤️', label: 'Love' },
-  { id: 'haha', emoji: '😂', label: 'Haha' },
-  { id: 'sad', emoji: '😢', label: 'Sad' },
-  { id: 'angry', emoji: '😡', label: 'Angry' }
+  { id: 'like', emoji: '\u{1F44D}', label: 'Like' },
+  { id: 'heart', emoji: '\u{2764}\u{FE0F}', label: 'Love' },
+  { id: 'haha', emoji: '\u{1F602}', label: 'Haha' },
+  { id: 'sad', emoji: '\u{1F622}', label: 'Sad' },
+  { id: 'angry', emoji: '\u{1F621}', label: 'Angry' }
 ];
 
 function authorId(author) { return String(author?._id || author?.id || ''); }
@@ -39,6 +39,8 @@ export default function Community() {
   const [stories, setStories] = useState([]);
   const [text, setText] = useState('');
   const [images, setImages] = useState([]);
+  const [video, setVideo] = useState('');
+  const [videoPreview, setVideoPreview] = useState('');
   const [storyCaption, setStoryCaption] = useState('');
   const [storyImage, setStoryImage] = useState('');
   const [showStoryComposer, setShowStoryComposer] = useState(false);
@@ -71,11 +73,27 @@ export default function Community() {
     event.target.value = '';
   }
 
+  async function choosePostVideo(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!['video/mp4', 'video/webm', 'video/quicktime'].includes(file.type)) { setError('Choose an MP4, WebM, or MOV video.'); event.target.value = ''; return; }
+    if (file.size > 5 * 1024 * 1024) { setError('Keep videos under 5 MB and 60 seconds.'); event.target.value = ''; return; }
+    const url = URL.createObjectURL(file);
+    const metadata = document.createElement('video'); metadata.preload = 'metadata';
+    metadata.onloadedmetadata = () => {
+      URL.revokeObjectURL(url);
+      if (metadata.duration > 60) { setError('Videos can be up to 60 seconds long.'); return; }
+      const reader = new FileReader(); reader.onerror = () => setError('Could not read that video.'); reader.onload = () => { setVideo(reader.result); setVideoPreview(URL.createObjectURL(file)); setError(''); }; reader.readAsDataURL(file);
+    };
+    metadata.onerror = () => { URL.revokeObjectURL(url); setError('Could not open that video.'); };
+    metadata.src = url; event.target.value = '';
+  }
+
   async function publishPost(event) {
     event.preventDefault();
-    if (!text.trim() && images.length === 0) return;
+    if (!text.trim() && images.length === 0 && !video) return;
     setBusy(true); setError('');
-    try { await createPost({ text, images }); setText(''); setImages([]); await refresh(); }
+    try { await createPost({ text, images, video }); setText(''); setImages([]); setVideo(''); setVideoPreview(''); await refresh(); }
     catch (requestError) { setError(requestError.message); }
     finally { setBusy(false); }
   }
@@ -119,7 +137,7 @@ export default function Community() {
     <main className="page-shell max-w-[820px]">
       <Link to="/dashboard" className="mt-7 inline-flex items-center gap-2 text-xs text-muted hover:text-ink"><ArrowLeft size={14} /> Back to your space</Link>
       <section className="py-8 sm:py-10"><p className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[.16em] text-roseDark"><Newspaper size={15} /> Blanc community</p><h1 className="font-display text-4xl font-medium tracking-[-.04em] text-ink sm:text-5xl">A little progress, together.</h1><p className="mt-3 text-sm leading-6 text-muted">Share your movement, celebrate your friends, and check in on their day.</p></section>
-      {error && <p role="alert" className="mb-4 rounded-xl border border-[#d9a9ae] bg-[#f3e4e3] px-4 py-3 text-sm text-roseDark">{error}</p>}
+      {error && (error.includes('not on the Render backend') ? <div role="alert" className="mb-4 flex items-start gap-3 rounded-2xl border border-[#e2a7ae] bg-[#fbebeb] px-4 py-4 text-roseDark"><AlertCircle size={18} className="mt-0.5 shrink-0" /><div className="min-w-0 flex-1"><p className="text-sm font-semibold">Community is waiting for the Render update</p><p className="mt-1 text-xs leading-5">The latest social API is pushed. Render needs to deploy `blancgym` with `backend` as the root directory.</p><button type="button" onClick={refresh} className="mt-2 text-xs font-semibold underline underline-offset-4">Try again</button></div></div> : <p role="alert" className="mb-4 rounded-xl border border-[#d9a9ae] bg-[#f3e4e3] px-4 py-3 text-sm text-roseDark">{error}</p>)}
 
       <GlassCard className="mb-5 p-4 sm:p-5">
         <div className="mb-3 flex items-center gap-3"><Avatar person={user} size="h-10 w-10" /><div><p className="text-sm font-semibold text-ink">Your day</p><p className="text-xs text-muted">Stories disappear after 24 hours.</p></div><button type="button" onClick={() => setShowStoryComposer(true)} className="ml-auto inline-flex items-center gap-1.5 rounded-full bg-blush px-3 py-2 text-xs font-semibold text-roseDark"><Plus size={15} /> Add to my day</button></div>
@@ -133,7 +151,8 @@ export default function Community() {
         <form id="post-composer" onSubmit={publishPost}>
           <div className="flex items-start gap-3"><Avatar person={user} size="h-10 w-10" /><label className="min-w-0 flex-1"><span className="sr-only">Write a community post</span><textarea className="field min-h-[88px] resize-y border-0 bg-cream/65 px-4 py-3 text-sm focus:ring-2 focus:ring-rose/50" value={text} onChange={event => setText(event.target.value)} maxLength={1000} placeholder="Share a workout, a small win, or a little encouragement..." /></label></div>
           {images.length > 0 && <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">{images.map((image, index) => <div key={index} className="relative aspect-square overflow-hidden rounded-xl"><img src={image} alt={`Post attachment ${index + 1}`} className="h-full w-full object-cover" /><button type="button" onClick={() => setImages(current => current.filter((_, i) => i !== index))} aria-label="Remove photo" className="absolute right-2 top-2 rounded-full bg-white/90 p-1.5 text-ink"><X size={14} /></button></div>)}</div>}
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3"><label className="inline-flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 text-xs font-medium text-muted hover:bg-cream hover:text-roseDark"><ImagePlus size={16} /> Add photos<input type="file" accept="image/jpeg,image/png,image/webp" multiple className="sr-only" onChange={choosePostImages} disabled={images.length >= 4} /></label><span className="ml-auto mr-2 text-[10px] text-muted">{text.length}/1000</span><button disabled={busy || (!text.trim() && images.length === 0)} className="inline-flex items-center gap-2 rounded-full bg-roseDark px-4 py-2.5 text-xs font-semibold text-white disabled:opacity-50">{busy ? 'Posting...' : 'Share post'}<Send size={14} /></button></div>
+          {videoPreview && <div className="relative mt-3 mx-auto max-w-[260px] overflow-hidden rounded-xl bg-ink"><video src={videoPreview} controls playsInline className="max-h-80 w-full object-contain" /><button type="button" onClick={() => { setVideo(''); setVideoPreview(''); }} aria-label="Remove video" className="absolute right-2 top-2 rounded-full bg-black/60 p-2 text-white"><X size={14} /></button></div>}
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3"><label className="inline-flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 text-xs font-medium text-muted hover:bg-cream hover:text-roseDark"><ImagePlus size={16} /> Add photos<input type="file" accept="image/jpeg,image/png,image/webp" multiple className="sr-only" onChange={choosePostImages} disabled={images.length >= 4 || Boolean(video)} /></label><label className="inline-flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 text-xs font-medium text-muted hover:bg-cream hover:text-roseDark"><Video size={16} /> Add reel<input type="file" accept="video/mp4,video/webm,video/quicktime" capture="environment" className="sr-only" onChange={choosePostVideo} disabled={images.length > 0} /></label><span className="ml-auto mr-2 text-[10px] text-muted">{text.length}/1000</span><button disabled={busy || (!text.trim() && images.length === 0 && !video)} className="inline-flex items-center gap-2 rounded-full bg-roseDark px-4 py-2.5 text-xs font-semibold text-white disabled:opacity-50">{busy ? 'Posting...' : 'Share post'}<Send size={14} /></button></div>
         </form>
       </GlassCard>
 
@@ -145,6 +164,7 @@ export default function Community() {
           <div className="flex items-center gap-3 px-4 py-4 sm:px-5"><Link to={`/u/${post.author?.username}`}><Avatar person={post.author} size="h-10 w-10" /></Link><div className="min-w-0 flex-1"><Link to={`/u/${post.author?.username}`} className="block truncate text-sm font-semibold text-ink hover:text-roseDark">{displayName(post.author)}</Link><p className="text-[11px] text-muted">@{post.author?.username} · {formatTime(post.createdAt)}</p></div>{own && <button type="button" onClick={() => removePost(post)} className="rounded-full p-2 text-muted hover:bg-blush hover:text-roseDark" aria-label="Delete post"><Trash2 size={15} /></button>}</div>
           {post.text && <p className="whitespace-pre-wrap break-words px-4 pb-4 text-sm leading-6 text-ink sm:px-5">{post.text}</p>}
           {post.images?.length > 0 && <div className={`grid gap-1 ${post.images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>{post.images.map((image, index) => <img key={index} src={image} alt={`Photo shared by ${post.author?.username}`} className={`${post.images.length === 1 ? 'max-h-[620px]' : 'aspect-square'} w-full bg-cream object-cover`} loading="lazy" />)}</div>}
+          {post.video && <video src={post.video} controls playsInline preload="metadata" className="mx-auto max-h-[75vh] w-full bg-black object-contain" />}
           <div className="px-4 pt-3 sm:px-5">{post.reactions?.length > 0 && <p className="mb-2 text-[11px] text-muted">{reactionOptions.filter(option => counts[option.id]).map(option => `${option.emoji} ${counts[option.id]}`).join('  ·  ')}</p>}
             <div className="flex flex-wrap items-center gap-1 border-y border-line py-2">{reactionOptions.map(option => <button key={option.id} type="button" onClick={() => handleReaction(post, option.id)} aria-pressed={mine === option.id} className={`flex items-center gap-1.5 rounded-full px-2.5 py-2 text-[11px] font-medium transition-colors ${mine === option.id ? 'bg-blush text-roseDark' : 'text-muted hover:bg-cream hover:text-ink'}`}><span>{option.emoji}</span><span className="hidden sm:inline">{option.label}</span></button>)}<span className="ml-auto inline-flex items-center gap-1.5 px-2 text-[11px] text-muted"><MessageCircle size={14} /> {post.comments?.length || 0}</span></div>
             {post.comments?.length > 0 && <div className="max-h-60 space-y-2 overflow-y-auto py-3">{post.comments.map(comment => <p key={comment._id} className="break-words text-xs leading-5 text-ink"><span className="font-semibold">{comment.author?.username || 'friend'}</span><span className="ml-2 text-muted">{comment.text}</span></p>)}</div>}

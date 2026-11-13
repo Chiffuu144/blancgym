@@ -14,6 +14,7 @@ const postSchema = new mongoose.Schema({
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
   text: { type: String, trim: true, maxlength: 1000, default: '' },
   images: { type: [String], default: [] },
+  video: { type: String, default: '' },
   reactions: { type: [reactionSchema], default: [] },
   comments: { type: [commentSchema], default: [] }
 }, { timestamps: true });

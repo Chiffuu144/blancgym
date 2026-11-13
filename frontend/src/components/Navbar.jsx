@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Apple, ArrowUpRight, Dumbbell, LogOut, Menu, UserRound, X } from 'lucide-react';
+import { Apple, ArrowUpRight, Dumbbell, LogOut, Menu, UserRound, Users, X } from 'lucide-react';
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -9,7 +9,8 @@ const links = [
   { to: '/training', label: 'Stretching' },
   { to: '/gym', label: 'At the gym' },
   { to: '/home', label: 'At home' },
-  { to: '/nutrition', label: 'Nutrition', icon: Apple }
+  { to: '/nutrition', label: 'Nutrition', icon: Apple },
+  { to: '/friends', label: 'Friends', icon: Users }
 ];
 
 const spring = { type: 'spring', stiffness: 400, damping: 30 };

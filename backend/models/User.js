@@ -17,7 +17,8 @@ const userSchema = new mongoose.Schema({
   goal: { type: String, enum: ['fat-loss', 'build-muscle', 'maintain-weight'], required: true },
   bmr: { type: Number, required: true },
   tdee: { type: Number, required: true },
-  targetDailyCalories: { type: Number, required: true }
+  targetDailyCalories: { type: Number, required: true },
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 export default mongoose.model('User', userSchema);

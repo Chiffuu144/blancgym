@@ -31,7 +31,13 @@ export function AuthProvider({ children }) {
   const getNutrition = useCallback((date) => request(`/nutrition?date=${encodeURIComponent(date)}`, {}, token), [token]);
   const addMeal = useCallback((meal) => request('/nutrition/meals', { method: 'POST', body: JSON.stringify(meal) }, token), [token]);
   const removeMeal = useCallback((mealId) => request(`/nutrition/meals/${encodeURIComponent(mealId)}`, { method: 'DELETE' }, token), [token]);
-  const value = useMemo(() => ({ user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal }), [user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal]);
+  const getFriends = useCallback(async () => (await request('/community/friends', {}, token)).friends, [token]);
+  const searchUsers = useCallback(async (query) => (await request(`/community/users?query=${encodeURIComponent(query)}`, {}, token)).users, [token]);
+  const addFriend = useCallback((id) => request(`/community/friends/${encodeURIComponent(id)}`, { method: 'PUT' }, token), [token]);
+  const removeFriend = useCallback((id) => request(`/community/friends/${encodeURIComponent(id)}`, { method: 'DELETE' }, token), [token]);
+  const getMessages = useCallback(async (id) => (await request(`/community/messages/${encodeURIComponent(id)}`, {}, token)).messages, [token]);
+  const sendMessage = useCallback(async (id, text) => (await request(`/community/messages/${encodeURIComponent(id)}`, { method: 'POST', body: JSON.stringify({ text }) }, token)).message, [token]);
+  const value = useMemo(() => ({ user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage }), [user, token, loading, register, login, updateProfile, requestPasswordReset, resetPassword, logout, getWorkouts, getNutrition, addMeal, removeMeal, getFriends, searchUsers, addFriend, removeFriend, getMessages, sendMessage]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

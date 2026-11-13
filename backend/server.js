@@ -8,6 +8,7 @@ import seedWorkouts from './config/seedWorkouts.js';
 import authRoutes from './routes/authRoutes.js';
 import workoutRoutes from './routes/workoutRoutes.js';
 import nutritionRoutes from './routes/nutritionRoutes.js';
+import communityRoutes from './routes/communityRoutes.js';
 
 const app = express();
 app.use(cors({ origin: process.env.CLIENT_URL?.split(',') || 'http://localhost:5173' }));
@@ -15,6 +16,7 @@ app.use(express.json({ limit: '8mb' }));
 app.use('/api/auth', rateLimit({ windowMs: 15 * 60 * 1000, limit: 100 }), authRoutes);
 app.use('/api/workouts', workoutRoutes);
 app.use('/api/nutrition', nutritionRoutes);
+app.use('/api/community', communityRoutes);
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
 
 app.use((err, _req, res, _next) => {

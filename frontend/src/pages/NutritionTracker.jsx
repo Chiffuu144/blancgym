@@ -25,7 +25,7 @@ export default function NutritionTracker() {
   const { user, getNutrition, addMeal, removeMeal } = useAuth();
   const date = useMemo(() => localDateKey(), []);
   const [nutrition, setNutrition] = useState(null);
-  const [form, setForm] = useState({ mealType: 'Breakfast', foodCategory: 'Ulam', name: '', calories: '', healthyChoice: false, photos: [] });
+  const [form, setForm] = useState({ mealType: 'Breakfast', foodCategory: 'Ulam', name: '', calories: '', proteinGrams: '', healthyChoice: false, photos: [] });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -54,8 +54,8 @@ export default function NutritionTracker() {
     setError('');
     setSaving(true);
     try {
-      await addMeal({ ...form, calories: Number(form.calories), date });
-      setForm(current => ({ ...current, name: '', calories: '', healthyChoice: false, photos: [] }));
+      await addMeal({ ...form, calories: Number(form.calories), proteinGrams: Number(form.proteinGrams || 0), date });
+      setForm(current => ({ ...current, name: '', calories: '', proteinGrams: '', healthyChoice: false, photos: [] }));
       await refresh();
     } catch (requestError) {
       setError(requestError.message);
@@ -126,6 +126,15 @@ export default function NutritionTracker() {
             <CalorieProgressBar consumed={nutrition?.caloriesConsumed || 0} target={nutrition?.targetCalories || user?.targetDailyCalories || 0} size={150} />
           </GlassCard>
 
+          <GlassCard className="p-6 sm:p-7">
+            <div className="flex items-start justify-between gap-4">
+              <div><p className="text-[11px] font-semibold uppercase tracking-[.15em] text-roseDark">Daily protein goal</p><h2 className="mt-2 font-display text-2xl font-medium text-ink">{nutrition?.proteinConsumed || 0} <span className="text-base text-muted">/ {nutrition?.proteinTarget || Math.round((user?.weightKg || 0) * (user?.goal === 'build-muscle' ? 1.6 : user?.goal === 'fat-loss' ? 1.4 : 1.2))} g</span></h2></div>
+              <span className="rounded-xl bg-blush px-3 py-2 text-xs font-semibold text-roseDark">Protein</span>
+            </div>
+            <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-cream"><motion.div initial={false} animate={{ width: `${Math.min(100, Math.round(((nutrition?.proteinConsumed || 0) / Math.max(1, nutrition?.proteinTarget || 1)) * 100))}%` }} transition={{ duration: .35, ease: [.23, 1, .32, 1] }} className="h-full rounded-full bg-roseDark" /></div>
+            <p className="mt-2 text-xs leading-5 text-muted">Estimated from your body weight and goal. Add protein grams to each meal to track your progress; individual needs vary.</p>
+          </GlassCard>
+
           <GlassCard className="nutrition-form-card p-6 sm:p-7">
             <div className="mb-5 flex items-center gap-3">
               <span className="grid h-10 w-10 place-items-center rounded-xl bg-blush text-roseDark"><Plus size={18} /></span>
@@ -148,6 +157,9 @@ export default function NutritionTracker() {
               <label className="block text-xs font-medium text-ink">Calories
                 <input className="field mt-2" type="number" inputMode="numeric" min="1" max="10000" step="1" value={form.calories} onChange={event => setForm(current => ({ ...current, calories: event.target.value }))} placeholder="350" required />
               </label>
+              <label className="block text-xs font-medium text-ink">Protein (grams)
+                <input className="field mt-2" type="number" inputMode="decimal" min="0" max="300" step="0.1" value={form.proteinGrams} onChange={event => setForm(current => ({ ...current, proteinGrams: event.target.value }))} placeholder="e.g. 25" />
+              </label>
               <div><p className="text-xs font-medium text-ink">Meal photos <span className="font-normal text-muted">(up to 4)</span></p><label className="mt-2 flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-line bg-cream/40 px-4 py-4 text-xs text-muted hover:bg-cream"><ImagePlus size={16} /> Take or upload meal photos<input type="file" accept="image/*" capture="environment" multiple className="sr-only" onChange={addPhotos} disabled={form.photos.length >= 4} /></label><p className="mt-1.5 text-[11px] leading-4 text-muted">Photos are saved with the meal. Enter the calories manually above.</p>{form.photos.length > 0 && <div className="mt-3 flex gap-2">{form.photos.map((photo, index) => <div key={index} className="relative h-16 w-16 overflow-hidden rounded-lg"><img src={photo} alt={`Meal photo ${index + 1}`} className="h-full w-full object-cover" /><button type="button" onClick={() => setForm(current => ({ ...current, photos: current.photos.filter((_, i) => i !== index) }))} className="absolute right-0.5 top-0.5 rounded-full bg-white/90 p-1" aria-label="Remove photo"><X size={12} /></button></div>)}</div>}</div>
               <button type="button" role="switch" aria-checked={form.healthyChoice} onClick={() => setForm(current => ({ ...current, healthyChoice: !current.healthyChoice }))} className="flex w-full items-center justify-between rounded-xl border border-line bg-cream/55 px-4 py-3 text-left">
                 <span><span className="block text-xs font-medium text-ink">Healthy choice?</span><span className="mt-1 block text-[11px] text-muted">A personal check-in, without judgment.</span></span>
@@ -167,7 +179,7 @@ export default function NutritionTracker() {
             <p className="mt-2 text-xs leading-5 text-muted">Try a protein food such as eggs, fish, chicken, tofu, beans, or lentils, alongside vegetables and a grain you enjoy.</p>
             <div className="mt-4 flex flex-wrap gap-2">
               {foodIdeas.map(idea => <button type="button" key={idea.name} onClick={() => setForm(current => ({ ...current, name: idea.name, foodCategory: idea.foodCategory }))} className="rounded-full border border-line bg-cream/70 px-3 py-2 text-left text-xs text-ink transition-colors hover:bg-blush">
-                {idea.name} <span className="text-muted">Ã‚Â· {idea.note}</span>
+                {idea.name} <span className="text-muted">&middot; {idea.note}</span>
               </button>)}
             </div>
             <a className="mt-4 inline-block text-[11px] text-roseDark underline decoration-line underline-offset-4" href="https://www.myplate.gov/sites/default/files/2024-08/MyPlate-Planning-For-Savings-Leftover-Edition.pdf" target="_blank" rel="noreferrer">More food-group ideas from USDA MyPlate</a>
@@ -190,7 +202,7 @@ export default function NutritionTracker() {
                   ? <p className="text-xs text-muted">Nothing logged here yet.</p>
                   : <ul className="space-y-3">{entries.map(meal => <li key={meal._id} className="flex items-start gap-3 rounded-xl bg-cream/60 p-3">
                     <span className={`mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg ${meal.healthyChoice ? 'bg-blush text-roseDark' : 'bg-paper text-muted'}`}>{meal.healthyChoice ? <Check size={14} /> : <Utensils size={13} />}</span>
-                    <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium text-ink">{meal.name}</p><p className="mt-1 text-xs text-muted">{meal.mealType} Ã‚Â· {meal.calories.toLocaleString()} kcal{meal.healthyChoice ? ' / healthy choice' : ''}</p>{meal.photos?.map((photo, index) => <img key={index} src={photo} alt={`${meal.name} photo ${index + 1}`} className="mt-2 mr-1 inline-block h-12 w-12 rounded-lg object-cover" />)}</div>
+                    <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium text-ink">{meal.name}</p><p className="mt-1 text-xs text-muted">{meal.mealType} &middot; {meal.calories.toLocaleString()} kcal{meal.proteinGrams > 0 ? ` &middot; ${meal.proteinGrams} g protein` : ''}{meal.healthyChoice ? ' / healthy choice' : ''}</p>{meal.photos?.map((photo, index) => <img key={index} src={photo} alt={`${meal.name} photo ${index + 1}`} className="mt-2 mr-1 inline-block h-12 w-12 rounded-lg object-cover" />)}</div>
                     <button type="button" onClick={() => deleteMeal(meal._id)} aria-label={`Remove ${meal.name}`} className="rounded-lg p-2 text-muted hover:bg-blush hover:text-roseDark"><Trash2 size={14} /></button>
                   </li>)}</ul>}
               </section>;

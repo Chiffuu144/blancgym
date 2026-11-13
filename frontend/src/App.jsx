@@ -13,8 +13,9 @@ import NutritionTracker from './pages/NutritionTracker.jsx';
 import LoadingScreen from './components/LoadingScreen.jsx';
 import Profile from './pages/Profile.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
+import Friends from './pages/Friends.jsx';
 
 function Landing() { const { user, loading } = useAuth(); return loading ? <LoadingScreen message="Opening your space..." /> : user ? <Navigate to="/dashboard" replace /> : <Home />; }
 export default function App() {
-  return <MotionConfig reducedMotion="user"><Routes><Route path="/" element={<Landing />} /><Route path="/login" element={<Login />} /><Route path="/forgot-password" element={<ForgotPassword />} /><Route path="/register" element={<Register />} /><Route element={<ProtectedRoute />}><Route path="/profile" element={<Profile />} /><Route path="/dashboard" element={<Dashboard />} /><Route path="/training" element={<ExerciseGuide />} /><Route path="/gym" element={<GymGuide />} /><Route path="/home" element={<HomeGuide />} /><Route path="/nutrition" element={<NutritionTracker />} /></Route><Route path="*" element={<Landing />} /></Routes></MotionConfig>;
+  return <MotionConfig reducedMotion="user"><Routes><Route path="/" element={<Landing />} /><Route path="/login" element={<Login />} /><Route path="/forgot-password" element={<ForgotPassword />} /><Route path="/register" element={<Register />} /><Route element={<ProtectedRoute />}><Route path="/profile" element={<Profile />} /><Route path="/dashboard" element={<Dashboard />} /><Route path="/training" element={<ExerciseGuide />} /><Route path="/gym" element={<GymGuide />} /><Route path="/home" element={<HomeGuide />} /><Route path="/nutrition" element={<NutritionTracker />} /><Route path="/friends" element={<Friends />} /></Route><Route path="*" element={<Landing />} /></Routes></MotionConfig>;
 }

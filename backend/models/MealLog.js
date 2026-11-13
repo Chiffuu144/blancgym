@@ -7,6 +7,7 @@ const mealLogSchema = new mongoose.Schema({
   foodCategory: { type: String, enum: ['Rice', 'Ulam', 'Other'], default: 'Other' },
   name: { type: String, required: true, trim: true, maxlength: 80 },
   calories: { type: Number, required: true, min: 1, max: 10000 },
+  proteinGrams: { type: Number, default: 0, min: 0, max: 300 },
   healthyChoice: { type: Boolean, default: false },
   photos: { type: [String], default: [] }
 }, { timestamps: true });
